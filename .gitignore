@@ -53,8 +53,6 @@ coverage.xml
 *.log
 local_settings.py
 
-# Flask instance folder
-instance/
 
 # Scrapy stuff:
 .scrapy
@@ -86,6 +84,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
 
 # =========================
 # Operating System Files
