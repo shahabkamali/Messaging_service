@@ -1,0 +1,17 @@
+{% extends "base.html"%}
+{% load i18n %}
+{% block title %}{% trans "Dashboard" %}{% endblock %}
+
+
+
+{% block content %}
+<div id="imgdiv" style="text-align: center">
+			<img id="image" src="/static/dist/img/test-map.jpg" style="border: 30px solid #ccc; padding:20px;" width="80%"/>
+			<br/>
+			<button id="toggleEdit">Edit</button>	<button id="export">Save</button>
+
+		</div>
+		<div id=txt></div>
+
+{% endblock %}
+
