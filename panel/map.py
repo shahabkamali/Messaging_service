@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 
 
 from matrix.python.samples.samplebase import SampleBase
-from matrix.python.samples.rgbmatrix import graphics
+from matrix.python.rgbmatrix import graphics
 
 import time
 
