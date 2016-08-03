@@ -11487,8 +11487,8 @@ wysihtml5.commands.formatCode = {
     }
   };
 })(wysihtml5);
-;wysihtml5.commands.redo = {
-  exec: function(composer) {
+wysihtml5.commands.redo = {
+    exec: function(composer) {
     return composer.undoManager.redo();
   },
 
@@ -11496,8 +11496,8 @@ wysihtml5.commands.formatCode = {
     return false;
   }
 };
-;wysihtml5.commands.underline = {
-  exec: function(composer, command) {
+wysihtml5.commands.underline = {
+    exec: function(composer, command) {
     wysihtml5.commands.formatInline.execWithToggle(composer, command, "u");
   },
 
@@ -11505,8 +11505,8 @@ wysihtml5.commands.formatCode = {
     return wysihtml5.commands.formatInline.state(composer, command, "u");
   }
 };
-;wysihtml5.commands.undo = {
-  exec: function(composer) {
+wysihtml5.commands.undo = {
+    exec: function(composer) {
     return composer.undoManager.undo();
   },
 
@@ -11514,8 +11514,8 @@ wysihtml5.commands.formatCode = {
     return false;
   }
 };
-;wysihtml5.commands.createTable = {
-  exec: function(composer, command, value) {
+wysihtml5.commands.createTable = {
+    exec: function(composer, command, value) {
       var col, row, html;
       if (value && value.cols && value.rows && parseInt(value.cols, 10) > 0 && parseInt(value.rows, 10) > 0) {
           if (value.tableStyle) {
@@ -11543,8 +11543,8 @@ wysihtml5.commands.formatCode = {
       return false;
   }
 };
-;wysihtml5.commands.mergeTableCells = {
-  exec: function(composer, command) {
+wysihtml5.commands.mergeTableCells = {
+    exec: function(composer, command) {
       if (composer.tableSelection && composer.tableSelection.start && composer.tableSelection.end) {
           if (this.state(composer, command)) {
               wysihtml5.dom.table.unmergeCell(composer.tableSelection.start);
@@ -11573,8 +11573,8 @@ wysihtml5.commands.formatCode = {
       return false;
   }
 };
-;wysihtml5.commands.addTableCells = {
-  exec: function(composer, command, value) {
+wysihtml5.commands.addTableCells = {
+    exec: function(composer, command, value) {
       if (composer.tableSelection && composer.tableSelection.start && composer.tableSelection.end) {
 
           // switches start and end if start is bigger than end (reverse selection)
@@ -11594,8 +11594,8 @@ wysihtml5.commands.formatCode = {
       return false;
   }
 };
-;wysihtml5.commands.deleteTableCells = {
-  exec: function(composer, command, value) {
+wysihtml5.commands.deleteTableCells = {
+    exec: function(composer, command, value) {
       if (composer.tableSelection && composer.tableSelection.start && composer.tableSelection.end) {
           var tableSelect = wysihtml5.dom.table.orderSelectionEnds(composer.tableSelection.start, composer.tableSelection.end),
               idx = wysihtml5.dom.table.indexOf(tableSelect.start),
@@ -11634,8 +11634,8 @@ wysihtml5.commands.formatCode = {
       return false;
   }
 };
-;wysihtml5.commands.indentList = {
-  exec: function(composer, command, value) {
+wysihtml5.commands.indentList = {
+    exec: function(composer, command, value) {
     var listEls = composer.selection.getSelectionParentsByTag('LI');
     if (listEls) {
       return this.tryToPushLiLevel(listEls, composer.selection);
@@ -11675,8 +11675,8 @@ wysihtml5.commands.formatCode = {
     return found;
   }
 };
-;wysihtml5.commands.outdentList = {
-  exec: function(composer, command, value) {
+wysihtml5.commands.outdentList = {
+    exec: function(composer, command, value) {
     var listEls = composer.selection.getSelectionParentsByTag('LI');
     if (listEls) {
       return this.tryToPullLiLevel(listEls, composer);
@@ -11752,7 +11752,8 @@ wysihtml5.commands.formatCode = {
     return newList;
   }
 
-};;/**
+};
+/**
  * Undo Manager for wysihtml5
  * slightly inspired by http://rniwa.com/editing/undomanager.html#the-undomanager-interface
  */
@@ -11967,7 +11968,7 @@ wysihtml5.commands.formatCode = {
     }
   });
 })(wysihtml5);
-;/**
+/**
  * TODO: the following methods still need unit test coverage
  */
 wysihtml5.views.View = Base.extend(
@@ -12021,8 +12022,8 @@ wysihtml5.views.View = Base.extend(
     this.element.removeAttribute("disabled");
   }
 });
-;(function(wysihtml5) {
-  var dom       = wysihtml5.dom,
+(function (wysihtml5) {
+    var dom       = wysihtml5.dom,
       browser   = wysihtml5.browser;
 
   wysihtml5.views.Composer = wysihtml5.views.View.extend(
@@ -12480,8 +12481,8 @@ wysihtml5.views.View = Base.extend(
     }
   });
 })(wysihtml5);
-;(function(wysihtml5) {
-  var dom             = wysihtml5.dom,
+(function (wysihtml5) {
+    var dom             = wysihtml5.dom,
       doc             = document,
       win             = window,
       HOST_TEMPLATE   = doc.createElement("div"),
@@ -12681,7 +12682,7 @@ wysihtml5.views.View = Base.extend(
     return this;
   };
 })(wysihtml5);
-;/**
+/**
  * Taking care of events
  *  - Simulating 'change' event on contentEditable element
  *  - Handling drag & drop logic
@@ -13020,7 +13021,7 @@ wysihtml5.views.View = Base.extend(
     });
   };
 })(wysihtml5);
-;/**
+/**
  * Class that takes care that the value of the composer and the textarea is always in sync
  */
 (function(wysihtml5) {
@@ -13117,8 +13118,8 @@ wysihtml5.views.View = Base.extend(
     }
   });
 })(wysihtml5);
-;wysihtml5.views.Textarea = wysihtml5.views.View.extend(
-  /** @scope wysihtml5.views.Textarea.prototype */ {
+wysihtml5.views.Textarea = wysihtml5.views.View.extend(
+    /** @scope wysihtml5.views.Textarea.prototype */ {
   name: "textarea",
 
   constructor: function(parent, textareaElement, config) {
@@ -13188,7 +13189,7 @@ wysihtml5.views.View = Base.extend(
     });
   }
 });
-;/**
+/**
  * WYSIHTML5 Editor
  *
  * @param {Element} editableElement Reference to the textarea which should be turned into a rich text interface
@@ -13430,7 +13431,7 @@ wysihtml5.views.View = Base.extend(
     }
   });
 })(wysihtml5);
-;/**
+/**
  * Toolbar Dialog
  *
  * @param {Element} link The toolbar link which causes the dialog to show up
@@ -13630,7 +13631,7 @@ wysihtml5.views.View = Base.extend(
     }
   });
 })(wysihtml5);
-;/**
+/**
  * Converts speech-to-text and inserts this into the editor
  * As of now (2011/03/25) this only is supported in Chrome >= 11
  *
@@ -13720,7 +13721,7 @@ wysihtml5.views.View = Base.extend(
     });
   };
 })(wysihtml5);
-;/**
+/**
  * Toolbar
  *
  * @param {Object} parent Reference to instance of Editor instance
@@ -14045,7 +14046,7 @@ wysihtml5.views.View = Base.extend(
   });
 
 })(wysihtml5);
-;(function(wysihtml5) {
+(function (wysihtml5) {
     wysihtml5.toolbar.Dialog_createTable = wysihtml5.toolbar.Dialog.extend({
         show: function(elementToChange) {
             this.base(elementToChange);
@@ -14054,8 +14055,8 @@ wysihtml5.views.View = Base.extend(
 
     });
 })(wysihtml5);
-;(function(wysihtml5) {
-  var dom                     = wysihtml5.dom,
+(function (wysihtml5) {
+    var dom                     = wysihtml5.dom,
       SELECTOR_FIELDS         = "[data-wysihtml5-dialog-field]",
       ATTRIBUTE_FIELDS        = "data-wysihtml5-dialog-field";
 
@@ -14112,8 +14113,8 @@ wysihtml5.views.View = Base.extend(
 
   });
 })(wysihtml5);
-;(function(wysihtml5) {
-  var dom                     = wysihtml5.dom,
+(function (wysihtml5) {
+    var dom                     = wysihtml5.dom,
       SELECTOR_FIELDS         = "[data-wysihtml5-dialog-field]",
       ATTRIBUTE_FIELDS        = "data-wysihtml5-dialog-field";
 

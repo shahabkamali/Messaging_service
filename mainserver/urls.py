@@ -12,4 +12,6 @@ urlpatterns = [
     url(r'^logout', 'panel.views.logout_user'),
     url(r'^login', 'panel.views.login_user'),
     url(r'^map', 'panel.map.show_page'),
+    url(r'^text-preset', 'panel.preset.text'),
+    url(r'^tv-preset', 'panel.preset.tv'),
 ]
