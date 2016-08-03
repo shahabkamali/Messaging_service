@@ -10,7 +10,7 @@ import time
 
 
 def Run():
-    matrix = RGBMatrix(6, 1, 1)
+    matrix = RGBMatrix(32, 1, 1)
     matrix.pwmBits = 11
     matrix.brightness = 100
     offscreenCanvas = matrix.CreateFrameCanvas()
