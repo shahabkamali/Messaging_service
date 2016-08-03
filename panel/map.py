@@ -2,6 +2,11 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 
 
+
+from matrix.python.samples.runtext import RunText
+
+
+'''
 from matrix.python.rgbmatrix import graphics
 from matrix.python.rgbmatrix import RGBMatrix
 
@@ -30,13 +35,15 @@ def Run():
         time.sleep(0.05)
         offscreenCanvas = matrix.SwapOnVSync(offscreenCanvas)
 
-
+'''
 
 
 def show_page(request) :
     if not request.user.is_authenticated():
         return redirect('/login')
-    Run()
+    parser = RunText()
+    if (not parser.process()):
+        parser.print_help()
     return render(request, 'map.html')
 
 
