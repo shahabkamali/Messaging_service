@@ -10,12 +10,12 @@ import time
 
 
 def Run():
-    matrix = RGBMatrix(32, 1, 1)
+    matrix = RGBMatrix(32, 6, 1)
     matrix.pwmBits = 11
     matrix.brightness = 100
     offscreenCanvas = matrix.CreateFrameCanvas()
     font = graphics.Font()
-    font.LoadFont("../../fonts/7x13.bdf")
+    font.LoadFont("../matrix/fonts/7x13.bdf")
     textColor = graphics.Color(255, 255, 0)
     pos = offscreenCanvas.width
     myText = "Hello World!"
