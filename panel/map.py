@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from django.contrib.auth import logout
 from django.shortcuts import redirect
-from django.contrib.auth import authenticate, login
-from mainserver.matrix.python.samples.samplebase import SampleBase
-from mainserver.matrix.python.samples.rgbmatrix import graphics
+
+
+from matrix.python.samples.samplebase import SampleBase
+from matrix.python.samples.rgbmatrix import graphics
 
 import time
 
