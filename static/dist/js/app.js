@@ -1,6 +1,7 @@
 // map selector
 
 ;(function($) {
+
 	$(document).ready(function() {
 		var $img = $("#image").imgNotes();
 		$img.imgNotes("import", [	{x: "0.5", y:"0.5", note:"AFL Grand Final Trophy"},
@@ -32,5 +33,15 @@
 									});
 									$('#txt').html($table);
 		});
+
+        $(".send-text").on("click",function () {
+            $.ajax({
+                'url' : '/map',
+                 method: "POST",
+                 data: { text: $("#text").val(),'csrfmiddlewaretoken':$( "input[name='csrfmiddlewaretoken']" ).val() }
+            })
+
+        })
 	});
 })(jQuery);
+
