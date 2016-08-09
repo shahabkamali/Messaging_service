@@ -1,5 +1,5 @@
 .marker{
-  width: 27px;
+  width: 38px;
   height: 40px;
   position: absolute;
   left: -13px;
@@ -10,8 +10,17 @@
   letter-spacing: -1px;
   text-align: center;
   color: #fff;
+  background-size: cover;
 }
  
 .marker.black{
-  background: url(marker_black.png);
+  background-image: url(marker_black.png);
+}
+
+.marker.tv{
+  background-image: url("/static/dist/img/MapMarker_Marker_Outside_Chartreuse.png");
+}
+
+.marker.led{
+  background-image: url("/static/dist/img/MapMarker_Marker_Outside_Pink.png");
 }

@@ -21,7 +21,7 @@
 			onAdd: function() {
 				this.options.vAll = "bottom";
 				this.options.hAll = "middle";
-				return  $(document.createElement('span')).addClass("marker black").html(this.noteCount);
+				return  $(document.createElement('span')).addClass("marker").html(this.noteCount);
 			},
 /*
  *	Default callback when the marker is clicked and the widget has canEdit = true
@@ -208,14 +208,14 @@
 /*
  *	Add a note
  */
-		addNote: function(relx, rely, text) {
+		addNote: function(relx, rely, type) {
 			var self = this;
 			this.noteCount++;
 			var elem = this.options.onAdd.call(this);
 			var $elem = $(elem);
 			$(this.img).imgViewer("addElem",elem);
-			$elem.data("relx", relx).data("rely", rely).data("note", text);
-			
+			$elem.data("relx", relx).data("rely", rely).data("type", type);
+			$elem.addClass(type);
 			switch (this.options.vAll) {
 				case "top": $elem.data("yOffset", 0); break;
 				case "bottom": $elem.data("yOffset", $elem.height()); break;
@@ -275,7 +275,7 @@
 		import: function(notes) {
 			var self = this;
 			$.each(notes, function() {
-				self.addNote(this.x, this.y, this.note);
+				self.addNote(this.x, this.y, this.type);
 			});
 			$(this.img).imgViewer("update");
 		},
