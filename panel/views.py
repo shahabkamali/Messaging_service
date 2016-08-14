@@ -35,3 +35,18 @@ def login_user(request):
                 'errror': 'your username or password is invalid, try again.',
             }, content_type='application/xhtml+xml')
 
+
+def user_lists(request):
+    return render(request, 'users.html')
+
+
+def user_add(request):
+    return render(request, 'add_user.html')
+
+
+def hardware(request):
+    return render(request, 'hardware.html')
+
+
+def add_hardware(request):
+    return render(request, 'add_hardware.html')
