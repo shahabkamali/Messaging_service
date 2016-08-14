@@ -1,6 +1,22 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 
+import sys
+sys.path.append('/home/pi/mainserver/matrix/python/samples')
+
+
+from samplebase import SampleBase
+
+
+import time
+
+class RunText(SampleBase):
+    def __init__(self, *args, **kwargs):
+        super(RunText, self).__init__(*args, **kwargs)
+
+
+
+
 """
 from .core import RGBMatrix, FrameCanvas
 import graphics
@@ -88,6 +104,9 @@ def RunGraphics():
 
 from django.http import HttpResponse
 def show_page(request) :
+    parser = RunText()
+    if (not parser.process()):
+        parser.print_help()
     if not request.user.is_authenticated():
         return redirect('/login')
     #threading.Thread(target=worker).start()

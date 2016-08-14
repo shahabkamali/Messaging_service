@@ -57,7 +57,7 @@
         // remove old map data
         var $img = $(".map img"),
             data = map_data[id];
-
+		$img.attr("src",'/static/dist/img/boxed-bg.png');
         $img.attr("src",data['image']);
         if(map_exist){
             $img.imgNotes("destroy");
