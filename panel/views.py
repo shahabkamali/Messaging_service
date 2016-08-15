@@ -50,3 +50,11 @@ def hardware(request):
 
 def add_hardware(request):
     return render(request, 'add_hardware.html')
+
+
+def message(request):
+    return render(request, 'messages.html')
+
+
+def add_message(request):
+    return render(request, 'add_message.html')

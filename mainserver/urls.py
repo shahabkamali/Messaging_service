@@ -17,5 +17,7 @@ urlpatterns = [
     url(r'^userlists', panelviews.user_lists),
     url(r'^useradd', panelviews.user_add),
     url(r'^hardwares', panelviews.hardware),
-    url(r'^addhardware', panelviews.add_hardware)
+    url(r'^addhardware', panelviews.add_hardware),
+    url(r'^messages', panelviews.message),
+    url(r'^addmessage', panelviews.add_message)
 ]
