@@ -1,0 +1,35 @@
+{% extends "base.html"%}
+{% block title %}users{% endblock %}
+{% block bodyclass %} page users {% endblock %}
+{% block content %}
+{% load static %}
+<a href="/addmessage" class="btn btn-info" role="button">Add Message</a>
+</br></br></br>
+Messages List:
+<table class="table table-bordered">
+  <thead>
+  <tr valign="middle">
+    <th>ID</th>
+    <th>Message Name</th>
+    <th>Priority</th>
+    <th>Repeat</th>
+    <th>Trigger On</th>
+    <th>Trigger Off</th>
+    <th>Audio Alert</th>
+    <th>Audio Message</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr valign="middle">
+    <th scope="row">FA1</th>
+    <td>Fire Alert01</td>
+    <td>1</td>
+    <td>5</td>
+    <td>Device</td>
+    <td>Time</td>
+    <td>On</td>
+    <td>On</td>
+  </tr>
+  </tbody>
+</table>
+{% endblock %}
