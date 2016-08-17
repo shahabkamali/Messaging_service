@@ -104,9 +104,9 @@ def RunGraphics():
 
 from django.http import HttpResponse
 def show_page(request) :
-    parser = RunText()
-    if (not parser.process()):
-        parser.print_help()
+    #parser = RunText()
+    #if (not parser.process()):
+    #    parser.print_help()
     if not request.user.is_authenticated():
         return redirect('/login')
     #threading.Thread(target=worker).start()
