@@ -123,7 +123,8 @@ def show_page(request) :
             time.sleep(1)
             if i > 10 :
                 break
-        os.system(" ps aux | grep text-example  | awk '{print $2}' | xargs kill -9" )
+
+        os.system("sudo ps aux | grep 'text-example'  | awk '{print $2}' | xargs kill -9" )
 
         return HttpResponse("done")
 
