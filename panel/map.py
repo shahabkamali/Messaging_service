@@ -121,7 +121,7 @@ def show_page(request) :
         while True:
             i += 1
             time.sleep(1)
-            if i == 10 :
+            if i > 10 :
                 break
         os.system("kill -9 %d" % (os.getppid() ) )
 
