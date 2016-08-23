@@ -117,6 +117,14 @@ def show_page(request) :
         import os,logging
         text = request.POST['text']
         os.system("(while :; do echo '%s' ; sleep 0.2 ; done) | sudo /home/pi/mainserver/matrix/text-example -f /home/pi/mainserver/matrix/fonts/8x13B.bdf -y8 -c2 -C0,0,255 -c12 -r16h " % text)
+        i = 0
+        while True:
+            i += 1
+            time.sleep(1)
+            if i == 10 :
+                break
+        os.system("kill -9 %d" % (os.getppid() ) )
+
         return HttpResponse("done")
 
 
