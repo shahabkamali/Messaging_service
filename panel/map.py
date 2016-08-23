@@ -123,7 +123,7 @@ def show_page(request) :
             time.sleep(1)
             if i > 10 :
                 break
-        os.system("kill -9 %d" % (os.getppid() ) )
+        os.system(" ps aux | grep text-example  | awk '{print $2}' | xargs kill -9" )
 
         return HttpResponse("done")
 
