@@ -1,0 +1,57 @@
+{% extends "base.html"%}
+{% block title %}users{% endblock %}
+{% block bodyclass %} page users {% endblock %}
+{% block content %}
+{% load static %}
+<a href="/addhardware" class="btn btn-info" role="button">Add Map</a>
+</br></br></br>
+Map List
+<table class="table table-bordered">
+  <thead>
+  <tr valign="middle">
+    <th>Map no</th>
+    <th>Map Name</th>
+    <th>Map Type</th>
+    <th>Link To Map</th>
+    <th>Access</th>
+    <th>Last Update</th>
+    <th>File Name</th>
+    <th>Edit</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr valign="middle">
+    <th scope="row">0B01</th>
+    <td>main office map</td>
+    <td>main build</td>
+    <td>PR01</td>
+    <td>admin</td>
+    <td>08/08/2016</td>
+    <td>map ver01.jpg</td>
+    <td><button type="button" class="btn btn-success">Edit</button></td>
+  </tr>
+  <tr valign="middle">
+    <th scope="row">PR01</th>
+    <td>Property map</td>
+    <td>main map</td>
+    <td>none</td>
+    <td>all</td>
+    <td>10/08/2016</td>
+    <td>map ver02.jpg</td>
+    <td><button type="button" class="btn btn-success">Edit</button></td>
+  </tr>
+  <tr valign="middle">
+    <th scope="row">PR01</th>
+    <td>North building map</td>
+    <td>main bulld</td>
+    <td>PR01</td>
+    <td>all</td>
+    <td>10/10/2016</td>
+    <td>map ver03.jpg</td>
+    <td><button type="button" class="btn btn-success">Edit</button></td>
+  </tr>
+  </tbody>
+</table>
+
+
+{% endblock %}
