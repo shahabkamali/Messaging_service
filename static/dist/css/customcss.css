@@ -1,0 +1,8 @@
+.addmessage .row{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.addmessage select{
+   width: 50% !important;
+}
