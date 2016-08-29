@@ -117,6 +117,7 @@ def show_page(request) :
         import os,logging
         text = request.POST['text']
         def run_bash():
+            os.system("sudo ps aux | grep 'text-example'  | awk '{print $2}' | xargs kill -9")
             os.system("(while :; do echo '%s' ; sleep 0.2 ; done) | sudo /home/pi/LED-Sign-Controller/text-example -f /home/pi/LED-Sign-Controller/fonts/8x13B.bdf -y8 -c2 -C0,0,255 -c12 -r16h -b10 " % text)
         t = threading.Thread(target=run_bash)
         t.start()
