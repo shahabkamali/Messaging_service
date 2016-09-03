@@ -39,7 +39,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
-    <form action="/login" method="post">
+    <form action="{% url 'users:login_user' %}" method="post">
       {% csrf_token %}
       <div class="form-group has-feedback">
         <input type="text" name="username" class="form-control" placeholder="Email">

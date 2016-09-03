@@ -3,7 +3,7 @@
 {% block bodyclass %} page users {% endblock %}
 {% block content %}
 {% load static %}
-<a href="/useradd" class="btn btn-info" role="button">Add user</a>
+<a href="{% url 'users:user_add' %}" class="btn btn-info" role="button">Add user</a>
 </br></br></br>
 
 <table class="table table-striped">
