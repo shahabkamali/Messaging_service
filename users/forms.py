@@ -1,25 +1,38 @@
 from django import forms
+from django.contrib.auth.models import User
+from django.core.exceptions import  ValidationError
+from .models import UserProfile
 
 
 class UserAddForm(forms.Form):
-        username = forms.CharField(label='UserName', widget=forms.TextInput(attrs={'placeholder': 'Username'}))
-        firstname = forms.CharField(label='FirstName', widget=forms.TextInput(attrs={'placeholder': 'FirstName'}))
-        lastname = forms.CharField(label='LastName', max_length=100)
-        email = forms.EmailField()
-        password1 = forms.CharField(widget=forms.PasswordInput)
-        password2 = forms.CharField(widget=forms.PasswordInput)
+        id = forms.CharField(widget=forms.HiddenInput(), required=False, label='')
+        username = forms.CharField(label='UserName',
+                                   widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control'}))
+        firstname = forms.CharField(label='FirstName',
+                                    widget=forms.TextInput(attrs={'placeholder': 'FirstName', 'class': 'form-control'}))
+        lastname = forms.CharField(label='LastName',
+                                   widget=forms.TextInput(attrs={'placeholder': 'LastName', 'class': 'form-control'}))
+        email = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': 'Email', 'class': 'form-control'}))
+        password1 = forms.CharField(label='Password',
+                                    widget=forms.PasswordInput(attrs={'placeholder':'Password', 'class': 'form-control'}))
+        password2 = forms.CharField(label='Retype Password',
+                                    widget=forms.PasswordInput(attrs={'placeholder':'RetypePassword', 'class': 'form-control'}))
+        picture = forms.ImageField(required=False)
 
         def clean_username(self):
             data = self.cleaned_data['username']
+            id = self.cleaned_data['id']
             if User.objects.filter(username=data).exists():
-                raise ValidationError('Username already taken.')
+                if not id:
+                    raise ValidationError('Username already taken.')
             return data
 
-        def clean(self):
+        def clean_password2(self):
             password1 = self.cleaned_data.get('password1')
             password2 = self.cleaned_data.get('password2')
 
-            if password1 and password1 != password2:
-                raise forms.ValidationError("Passwords don't match")
-
-            return self.cleaned_data
+            if not password2:
+                raise forms.ValidationError("You must confirm your password")
+            if password1 != password2:
+                raise forms.ValidationError("Your passwords do not match")
+            return password2

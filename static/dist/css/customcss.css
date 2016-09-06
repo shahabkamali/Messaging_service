@@ -6,3 +6,8 @@
 .addmessage select{
    width: 50% !important;
 }
+
+.adduser .form-error{
+   color: red;
+   font-size:17px;
+}

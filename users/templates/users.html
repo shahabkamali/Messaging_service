@@ -3,6 +3,7 @@
 {% block bodyclass %} page users {% endblock %}
 {% block content %}
 {% load static %}
+{% load staticfiles %}
 <a href="{% url 'users:user_add' %}" class="btn btn-info" role="button">Add user</a>
 </br></br></br>
 
@@ -10,6 +11,7 @@
   <thead>
   <tr valign="middle">
     <th></th>
+    <th>User Name</th>
     <th>First Name</th>
     <th>Last Name</th>
     <th>Email</th>
@@ -18,30 +20,22 @@
   </tr>
   </thead>
   <tbody>
+  {% for userprofile in users %}
   <tr valign="middle">
-    <th scope="row"><img src="{% static 'dist/img/avatar5.png' %}" width="35" height="35" alt="..." class="img-circle"></th>
-    <td>Mark</td>
-    <td>Otto</td>
-    <td>mark@jaglion.com</td>
-    <td><button type="button" class="btn btn-success">Edit</button></td>
-    <td><button type="button" class="btn btn-danger">Delete</button></td>
+    {% if userprofile.picture %}
+        <th scope="row"><img src="{% static 'users/picture/' %}{{userprofile.user.username}}.jpg" width="35" height="35" alt="..." class="img-circle"></th>
+    {% else %}
+        <th scope="row"><img src="{% static 'dist/img/404_user.png' %}" width="35" height="35" alt="..." class="img-circle"></th>
+    {% endif %}
+        <td>{{userprofile.user.username}}</td>
+        <td>{{userprofile.user.first_name}}</td>
+        <td>{{userprofile.user.last_name}}</td>
+        <td>{{userprofile.user.email}}</td>
+        <td><a class="btn btn-success" href="{% url 'users:user_add' %}?edit={{userprofile.user_id}}" role="button">Edit</a></td>
+        <td><a class="btn btn-danger" href="{% url 'users:user_lists' %}?delete={{userprofile.user_id}}" role="button">Delete</a></td>
   </tr>
-  <tr valign="middle">
-    <th scope="row"><img src="{% static 'dist/img/avatar3.png' %}" width="35" height="35" alt="..." class="img-circle"></th>
-    <td>Jacob</td>
-    <td>Thornton</td>
-    <td>jacob@jaglion.com</td>
-    <td><button type="button" class="btn btn-success">Edit</button></td>
-    <td><button type="button" class="btn btn-danger">Delete</button></td>
-  </tr>
-  <tr valign="middle">
-    <th scope="row"><img src="{% static 'dist/img/avatar2.png' %}" width="35" height="35" alt="..." class="img-circle"></th>
-    <td>Larry</td>
-    <td>the Bird</td>
-    <td>lalrry@jaglion.com</td>
-    <td><button type="button" class="btn btn-success">Edit</button></td>
-    <td><button type="button" class="btn btn-danger">Delete</button></td>
-  </tr>
+  {% endfor %}
+
   </tbody>
 </table>
 {% endblock %}
