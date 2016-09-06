@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
 from panel.views import index
@@ -112,3 +112,24 @@ def user_add(request):
     form = UserAddForm(initial=data)
     context = {'form': form}
     return render(request, 'add_user.html', context)
+
+
+def responce_image(address):
+    try:
+        image_data = open(address, "rb").read()
+        return HttpResponse(image_data, content_type="image/png")
+    except IOError:
+        return address
+
+
+def getProfilePicture(request):
+    userp = None
+    try:
+        userp = UserProfile.objects.get(user_id=request.user.id)
+    except:
+        userp = None
+    if userp == None:
+        res = responce_image("static/dist/img/404_user.png")
+    else:
+        res = responce_image("users/static/users/picture/{username}.jpg".format(username=userp.user.username))
+    return HttpResponse(res)

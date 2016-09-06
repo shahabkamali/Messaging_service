@@ -3,7 +3,6 @@
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
-{% load static %}
 <html>
 <head>
   <meta charset="utf-8">
@@ -77,7 +76,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a href="#">
                       <div class="pull-left">
                         <!-- User Image -->
-                        <img src="{% static 'users/picture/' %}{{request.user.username}}.jpg" class="img-circle" alt="...">
+                        <img src="{% url 'users:getProfilePicture'%}" class="img-circle" alt="User Image">
                       </div>
                       <!-- Message title and timestamp -->
                       <h4>
@@ -161,14 +160,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="{% static 'users/picture/' %}{{request.user.username}}.jpg" class="user-image" alt="...">
+              <img src="{% url 'users:getProfilePicture'%}" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs">{{ request.user.first_name }} {{ request.user.last_name }}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="{% static 'users/picture/' %}{{request.user.username}}.jpg" class="img-circle" alt="User Image">
+                <img src="{% url 'users:getProfilePicture'%}" class="img-circle" alt="User Image">
 
                 <p>
                   {{ request.user.first_name }} {{ request.user.last_name }}
@@ -217,7 +216,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="{% static 'users/picture/' %}{{request.user.username}}.jpg" class="img-circle" alt="">
+          <img src="{% url 'users:getProfilePicture'%}" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>{{ request.user.first_name }} {{ request.user.last_name }}</p>

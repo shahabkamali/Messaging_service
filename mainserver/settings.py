@@ -39,9 +39,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainserver',
-    'sorl.thumbnail',
     'users',
 )
+
+
+LOGIN_URL = '/users/login/'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
