@@ -5,6 +5,7 @@ from django.db import models
 from PIL import Image as Img
 import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from mainserver.settings import BASE_DIR
 
 
 def content_file_name(instance, filename):
@@ -19,6 +20,11 @@ class UserProfile(models.Model):
 
     def delete(self, *args, **kwargs):
         self.user.delete()
+        pth = os.path.join(BASE_DIR + '/users/static/users/picture/', self.user.username + '.jpg')
+        if os.path.isfile(pth):
+            os.remove(pth)
+        else:
+            return
         return super(self.__class__, self).delete(*args, **kwargs)
 
     def save(self, *args, **kwargs):

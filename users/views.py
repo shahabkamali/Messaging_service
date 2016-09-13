@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from panel.views import index
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
-from .forms import UserAddForm
+from .forms import UserAddForm,UserEditForm
 from .models import UserProfile
 
 
@@ -26,14 +26,14 @@ def login_user(request):
                 login(request, user)
                 return HttpResponseRedirect(reverse('index'))
             else:
-                # Return a 'disabled account' error message
+
                 return render(request, 'login.html', {
                     'error': 'your account is disabled , contact support .',
                 }, content_type='application/xhtml+xml')
         else:
             # Return an 'invalid login' error message.
             return render(request, 'login.html', {
-                'errror': 'your username or password is invalid, try again.',
+                'error': 'your username or password is invalid, try again.',
             }, content_type='application/xhtml+xml')
 
 
@@ -44,8 +44,12 @@ def logout_user(request):
 
 def user_lists(request):
     id = request.GET.get('delete', None)
+
     if id:
-        UserProfile.objects.get(user_id=id).delete()
+        user = User.objects.get(id=id)
+        if request.user == user:
+            UserProfile.objects.get(user_id=id).delete()
+            return HttpResponseRedirect(reverse('users:logout'))
 
     users_profile = UserProfile.objects.all()
     context = {'users': users_profile}
@@ -67,51 +71,65 @@ def handle_uploaded_file(image):
 
 def user_add(request):
     if request.method == "POST":
-        form = UserAddForm(request.POST, request.FILES)
-        print form.is_valid()
-        if form.is_valid():
-            uploaded_form = form.cleaned_data
-            username = uploaded_form['username']
-            firstname = uploaded_form['firstname']
-            lastname = uploaded_form['lastname']
-            email = uploaded_form['email']
-            password = uploaded_form['password1']
-            id = uploaded_form['id']
-            pic = ""
-            if 'picture' in request.FILES:
-                pic = request.FILES['picture']
-            if id:
+        pic = ""
+        if 'picture' in request.FILES:
+            pic = request.FILES['picture']
+        if 'id' in request.POST:
+            form = UserEditForm(request.POST, request.FILES)
+            if form.is_valid():
+                uploaded_form = form.cleaned_data
+                firstname = uploaded_form['firstname']
+                lastname = uploaded_form['lastname']
+                email = uploaded_form['email']
+                password = uploaded_form['password1']
+                id = uploaded_form['id']
                 user = User.objects.get(id=id)
                 user.first_name = firstname
                 user.last_name = lastname
                 user.email = email
                 user.set_password(password)
+                userpf = UserProfile.objects.get(user_id=id)
+                userpf.picture = pic
                 user.save()
-                if 'picture' in request.FILES:
-                    usp = UserProfile.objects.get(user_id=id)
-                    usp.picture = request.FILES['picture']
-                    usp.save()
+                userpf.save()
             else:
+                context = {'form': form}
+                return render(request, 'add_user.html', context)
+        else:
+            form = UserAddForm(request.POST, request.FILES)
+            if form.is_valid():
+                uploaded_form = form.cleaned_data
+                username = uploaded_form['username']
+                firstname = uploaded_form['firstname']
+                lastname = uploaded_form['lastname']
+                email = uploaded_form['email']
+                password = uploaded_form['password1']
+                pic = ""
+                if 'picture' in request.FILES:
+                    pic = request.FILES['picture']
+
                 user = User.objects.create_user(username=username,
                                             first_name=firstname, last_name=lastname, email=email, password=password)
                 user.save()
-
                 userprofile = UserProfile(picture=pic, user=user)
-                # userprofile.picture.save(user.username+".jpg", save=True)
                 userprofile.save()
-            return HttpResponseRedirect(reverse('users:user_lists'))
-        context = {'form': form}
-        return render(request, 'add_user.html', context)
+            else:
+                context = {'form': form}
+                return render(request, 'add_user.html', context)
+        return HttpResponseRedirect(reverse('users:user_lists'))
     else:
         id = request.GET.get('edit', None)
         data = None
+        form = UserAddForm(initial=data)
         if id:
             usp = UserProfile.objects.get(user_id=id)
-            data = {'username': usp.user.username, 'firstname': usp.user.first_name,
-                    'lastname': usp.user.last_name, 'email': usp.user.email, 'id':id}
-    form = UserAddForm(initial=data)
-    context = {'form': form}
-    return render(request, 'add_user.html', context)
+            if request.user != usp.user:
+                 return HttpResponseRedirect(reverse('users:user_lists'))
+            data = {'firstname': usp.user.first_name,
+                    'lastname': usp.user.last_name, 'email': usp.user.email,'picture':usp.picture,'id':id}
+            form = UserEditForm(initial=data)
+        context = {'form': form,'id':id}
+        return render(request, 'add_user.html', context)
 
 
 def responce_image(address):
