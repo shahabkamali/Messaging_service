@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from panel.views import index
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
-from .forms import UserAddForm,UserEditForm
+from .forms import UserAddForm,UserEditForm,UserChagePassword
 from .models import UserProfile
 
 
@@ -71,9 +71,7 @@ def handle_uploaded_file(image):
 
 def user_add(request):
     if request.method == "POST":
-        pic = ""
-        if 'picture' in request.FILES:
-            pic = request.FILES['picture']
+
         if 'id' in request.POST:
             form = UserEditForm(request.POST, request.FILES)
             if form.is_valid():
@@ -81,14 +79,16 @@ def user_add(request):
                 firstname = uploaded_form['firstname']
                 lastname = uploaded_form['lastname']
                 email = uploaded_form['email']
-                password = uploaded_form['password1']
                 id = uploaded_form['id']
                 user = User.objects.get(id=id)
                 user.first_name = firstname
                 user.last_name = lastname
                 user.email = email
-                user.set_password(password)
                 userpf = UserProfile.objects.get(user_id=id)
+                if 'picture' in request.FILES:
+                    pic = request.FILES['picture']
+                else:
+                    pic=userpf.picture
                 userpf.picture = pic
                 user.save()
                 userpf.save()
@@ -149,5 +149,29 @@ def getProfilePicture(request):
     if userp == None:
         res = responce_image("static/dist/img/404_user.png")
     else:
-        res = responce_image("users/static/users/picture/{username}.jpg".format(username=userp.user.username))
+        res = responce_image(str(userp.picture.path))
     return HttpResponse(res)
+
+
+def change_password(request):
+
+    form = UserChagePassword(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            uploaded_form = form.cleaned_data
+            id = uploaded_form['id']
+            password1 = uploaded_form['password1']
+            user = User.objects.get(id=id)
+            user.set_password(password1)
+            user.save()
+            return HttpResponseRedirect('/')
+        else:
+            context = {'form': form}
+            return render(request, 'change_password.html', context)
+    else:
+        id = request.GET['id']
+        data={'id':id}
+        form = UserChagePassword(initial=data)
+        context = {'form': form,'id':id}
+        return render(request, 'change_password.html', context)
+

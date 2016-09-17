@@ -1,5 +1,8 @@
 from django.conf.urls import url
 import views
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 app_name = 'users'
 urlpatterns = [
@@ -8,4 +11,5 @@ urlpatterns = [
     url(r'^login/', views.login_user, name='login_user'),
     url(r'^logout/', views.logout_user, name='logout'),
     url(r'^profilepicture/', views.getProfilePicture, name='getProfilePicture'),
-]
+    url(r'^changepassword/', views.change_password, name='change_password'),
+] +  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

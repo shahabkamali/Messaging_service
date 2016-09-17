@@ -11,16 +11,17 @@ from mainserver.settings import BASE_DIR
 def content_file_name(instance, filename):
     ext = filename.split('.')[-1]
     filename = "%s.%s" % (instance.user.username, ext)
-    return os.path.join('users/static/users/picture/', filename)
+    return os.path.join(instance.directory_string_var, filename)
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     picture = models.ImageField(upload_to=content_file_name, blank=True, null=True)
+    directory_string_var = 'picture'
 
     def delete(self, *args, **kwargs):
         self.user.delete()
-        pth = os.path.join(BASE_DIR + '/users/static/users/picture/', self.user.username + '.jpg')
+        pth = os.path.join(BASE_DIR + str(self.picture))
         if os.path.isfile(pth):
             os.remove(pth)
         else:
@@ -34,7 +35,7 @@ class UserProfile(models.Model):
             output = StringIO.StringIO()
             image.save(output, format='JPEG', quality=75)
             output.seek(0)
-            self.picture = InMemoryUploadedFile(output,'ImageField', "%s.jpg" % self.picture.name, 'image/jpeg', output.len, None)
+            self.picture = InMemoryUploadedFile(output,'ImageField',  self.picture.name, 'image/jpeg', output.len, None)
         super(UserProfile, self).save(*args, **kwargs)
 
 

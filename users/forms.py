@@ -49,18 +49,28 @@ class UserEditForm(forms.Form):
                                    widget=forms.TextInput(attrs={'placeholder': 'LastName', 'class': 'form-control'}))
         email = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': 'Email', 'class': 'form-control'}))
         picture = forms.ImageField(required=False)
-        password1 = forms.CharField(label='Password',
-                                    widget=forms.PasswordInput(attrs={'placeholder':'Password', 'class': 'form-control'}))
-        password2 = forms.CharField(label='Retype Password',
+
+
+class UserChagePassword(forms.Form):
+    id = forms.CharField(widget=forms.HiddenInput(), required=False, label='')
+    oldpassword = forms.CharField(label='Old Password',
+                                    widget=forms.PasswordInput(attrs={'placeholder': 'Old Password', 'class': 'form-control'}))
+    password1 = forms.CharField(label='New Password',
+                                    widget=forms.PasswordInput(attrs={'placeholder': 'New Password', 'class': 'form-control'}))
+    password2 = forms.CharField(label='Retype Password',
                                     widget=forms.PasswordInput(attrs={'placeholder':'RetypePassword', 'class': 'form-control'}))
-        picture = forms.ImageField(required=False)
 
+    def clean_oldpassword(self):
+        id = self.cleaned_data.get('id')
+        oldpass = self.cleaned_data.get('oldpassword')
+        user = User.objects.get(id=id)
+        if not user.check_password(oldpass):
+            raise forms.ValidationError("invalid old password")
+        return oldpass
 
-
-        def clean_password2(self):
+    def clean_password2(self):
             password1 = self.cleaned_data.get('password1')
             password2 = self.cleaned_data.get('password2')
-
             if not password2:
                 raise forms.ValidationError("You must confirm your password")
             if password1 != password2:
