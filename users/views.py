@@ -132,26 +132,6 @@ def user_add(request):
         return render(request, 'add_user.html', context)
 
 
-def responce_image(address):
-    try:
-        image_data = open(address, "rb").read()
-        return HttpResponse(image_data, content_type="image/png")
-    except IOError:
-        return address
-
-
-def getProfilePicture(request):
-    userp = None
-    try:
-        userp = UserProfile.objects.get(user_id=request.user.id)
-    except:
-        userp = None
-    if userp == None:
-        res = responce_image("static/dist/img/404_user.png")
-    else:
-        res = responce_image(str(userp.picture.path))
-    return HttpResponse(res)
-
 
 def change_password(request):
 

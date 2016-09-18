@@ -16,12 +16,12 @@ def content_file_name(instance, filename):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    picture = models.ImageField(upload_to=content_file_name, blank=True, null=True)
+    picture = models.ImageField(upload_to=content_file_name, blank=True, null=True,default="static/dist/img/404_user.png")
     directory_string_var = 'picture'
 
     def delete(self, *args, **kwargs):
         self.user.delete()
-        pth = os.path.join(BASE_DIR + str(self.picture))
+        pth = os.path.join(str(self.picture.path))
         if os.path.isfile(pth):
             os.remove(pth)
         else:

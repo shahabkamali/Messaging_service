@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    ''
     'mainserver',
     'users',
 )
@@ -104,9 +105,11 @@ USE_L10N = True
 USE_TZ = True
 
 
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'users/static/media/')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'users/static/media/')
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
