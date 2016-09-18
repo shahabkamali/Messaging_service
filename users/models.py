@@ -16,8 +16,8 @@ def content_file_name(instance, filename):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    picture = models.ImageField(upload_to=content_file_name, blank=True, null=True,default="static/dist/img/404_user.png")
-    directory_string_var = 'picture'
+    picture = models.ImageField(upload_to=content_file_name, blank=True,default="/static/dist/img/404_user.png")
+    directory_string_var = 'users/picture'
 
     def delete(self, *args, **kwargs):
         self.user.delete()

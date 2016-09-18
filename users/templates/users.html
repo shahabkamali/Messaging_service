@@ -22,7 +22,11 @@
   <tbody>
   {% for userprofile in users %}
   <tr valign="middle">
-        <th scope="row"><img src="/static/media/{{userprofile.picture}}" width="35" height="35" alt="..." class="img-circle"></th>
+        {% if userprofile.picture %}
+        <th scope="row"><img src="{{ MEDIA_URL }}users/picture/aliahmadi.jpg" width="35" height="35" alt="..." class="img-circle"></th>
+        {% else %}
+        <th scope="row"><img src="/static/dist/img/404_user.png" width="35" height="35" alt="..." class="img-circle"></th>
+        {% endif %}
         <td>{{userprofile.user.username}}</td>
         <td>{{userprofile.user.first_name}}</td>
         <td>{{userprofile.user.last_name}}</td>

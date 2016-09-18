@@ -47,9 +47,9 @@ def user_lists(request):
 
     if id:
         user = User.objects.get(id=id)
-        if request.user == user:
-            UserProfile.objects.get(user_id=id).delete()
-            return HttpResponseRedirect(reverse('users:logout'))
+        # if request.user == user:
+        UserProfile.objects.get(user_id=id).delete()
+        # return HttpResponseRedirect(reverse('users:logout'))
 
     users_profile = UserProfile.objects.all()
     context = {'users': users_profile}
