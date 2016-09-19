@@ -51,7 +51,7 @@ class UserEditForm(forms.Form):
         picture = forms.ImageField(required=False)
 
 
-class UserChagePassword(forms.Form):
+class UserChangePassword(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False, label='')
     oldpassword = forms.CharField(label='Old Password',
                                     widget=forms.PasswordInput(attrs={'placeholder': 'Old Password', 'class': 'form-control'}))

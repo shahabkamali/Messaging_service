@@ -21,11 +21,10 @@ class UserProfile(models.Model):
 
     def delete(self, *args, **kwargs):
         self.user.delete()
-        pth = os.path.join(str(self.picture.path))
+        pth = os.path.join(BASE_DIR+"/media/"+str(self.picture))
+        print "pth",pth
         if os.path.isfile(pth):
             os.remove(pth)
-        else:
-            return
         return super(self.__class__, self).delete(*args, **kwargs)
 
     def save(self, *args, **kwargs):

@@ -4,7 +4,7 @@
 {% block content %}
 {% load static %}
 <div>
-  <form method="post" action="" enctype="multipart/form-data">
+  <form method="post" action="{% url 'users:user_add' %}" enctype="multipart/form-data">
   {% csrf_token %}
   {% if id %}
     <input type="hidden" name="id" value="{{id}}">

@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from panel.views import index
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
-from .forms import UserAddForm,UserEditForm,UserChagePassword
+from .forms import UserAddForm,UserEditForm,UserChangePassword
 from .models import UserProfile
 
 
@@ -88,7 +88,7 @@ def user_add(request):
                 if 'picture' in request.FILES:
                     pic = request.FILES['picture']
                 else:
-                    pic=userpf.picture
+                    pic=""
                 userpf.picture = pic
                 user.save()
                 userpf.save()
@@ -135,7 +135,7 @@ def user_add(request):
 
 def change_password(request):
 
-    form = UserChagePassword(request.POST)
+    form = UserChangePassword(request.POST)
     if request.method == 'POST':
         if form.is_valid():
             uploaded_form = form.cleaned_data
@@ -151,7 +151,7 @@ def change_password(request):
     else:
         id = request.GET['id']
         data={'id':id}
-        form = UserChagePassword(initial=data)
+        form = UserChangePassword(initial=data)
         context = {'form': form,'id':id}
         return render(request, 'change_password.html', context)
 
