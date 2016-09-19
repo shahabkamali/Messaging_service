@@ -14,6 +14,7 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
     #url(r'^', include(admin.site.urls)),
     url(r'^users/', include('users.urls')),
+    url(r'^maps/', include('map.urls')),
     url(r'^$', panelviews.index, name='index'),
     #url(r'^map$', 'panel.map.show_page'),
     #url(r'^text-preset', 'panel.preset.text'),
@@ -23,6 +24,7 @@ urlpatterns = [
     url(r'^messages$', panelviews.message),
     url(r'^addmessage', panelviews.add_message),
     url(r'^maplist$', panelviews.map_list),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

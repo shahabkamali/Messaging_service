@@ -134,7 +134,6 @@ def user_add(request):
 
 
 def change_password(request):
-
     form = UserChangePassword(request.POST)
     if request.method == 'POST':
         if form.is_valid():
