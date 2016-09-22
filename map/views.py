@@ -79,3 +79,6 @@ def edit_map(request,mapid):
            return render(request, 'map_edit.html',{'form':form,'map':m})
 
 
+def markers(request,mapid):
+    m = Map.objects.get(id=mapid)
+    return render(request, 'markers.html',{'map':m})

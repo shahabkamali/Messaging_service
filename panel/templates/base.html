@@ -8,6 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Jaglion  {% block title %}{% endblock %}</title>
+  {% block head %}{% endblock %}
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -27,6 +28,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="/static/dist/css/customcss.css">
   <script src="/static/dist/js/custom_js.js" type="text/javascript"> </script>
 
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -38,6 +40,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <style type="text/css" media="all">@import "/static/dist/css/marker.css";</style>
 </head>
 <body class="hold-transition skin-black sidebar-mini {% block bodyclass %}{%endblock%}">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <div class="wrapper">
 
   <!-- Main Header -->

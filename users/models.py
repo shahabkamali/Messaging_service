@@ -6,6 +6,8 @@ from PIL import Image as Img
 import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from mainserver.settings import BASE_DIR
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
 
 
 def content_file_name(instance, filename):
@@ -21,10 +23,6 @@ class UserProfile(models.Model):
 
     def delete(self, *args, **kwargs):
         self.user.delete()
-        pth = os.path.join(BASE_DIR+"/media/"+str(self.picture))
-        print "pth",pth
-        if os.path.isfile(pth):
-            os.remove(pth)
         return super(self.__class__, self).delete(*args, **kwargs)
 
     def save(self, *args, **kwargs):
@@ -38,3 +36,24 @@ class UserProfile(models.Model):
         super(UserProfile, self).save(*args, **kwargs)
 
 
+
+@receiver(pre_delete, sender=UserProfile)
+def userprofile_delete(sender, instance, **kwargs):
+     if instance.picture:
+        if os.path.isfile(instance.picture.path):
+            os.remove(instance.picture.path)
+
+
+@receiver(models.signals.pre_save, sender=UserProfile)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    if not instance.pk:
+        return False
+    try:
+        old_file = UserProfile.objects.get(pk=instance.pk).picture
+    except UserProfile.DoesNotExist:
+        return False
+
+    new_file = instance.picture
+    if not old_file == new_file:
+        if os.path.isfile(old_file.path):
+            os.remove(old_file.path)

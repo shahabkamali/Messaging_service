@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^addfloor/$', views.floor_add, name='floor_add'),
     url(r'^mapdelete/$', views.map_delete, name='map_delete'),
     url(r'^editmap/(?P<mapid>\d+)/$', views.edit_map ,name='edit_map'),
+    url(r'^markers/(?P<mapid>\d+)/$', views.markers ,name='markers'),
 ]
