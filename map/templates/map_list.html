@@ -24,7 +24,7 @@ Map List
     <th scope="row">{{ map.mapname }}</th>
     <td>{{ map.floor.building }} </td>
     <td>{{ map.floor }}</td>
-    <td><td><a href="{% url 'map:markers' map.id %}" type="button" class="">add markers...</a></td></td>
+    <td><a href="{% url 'map:markers' map.id %}" type="button" class="">add markers...</a></td>
     <td><a href="{% url 'map:edit_map' map.id %}" type="button" class="btn btn-success">Edit</a></td>
     <td><a href="{% url 'map:map_delete' %}?delete={{map.id}}" type="button" class="btn btn-danger">Delete</a></td>
   </tr>

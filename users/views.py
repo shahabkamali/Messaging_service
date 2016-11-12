@@ -8,6 +8,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from .forms import UserAddForm,UserEditForm,UserChangePassword
 from .models import UserProfile
+from mainserver.settings import BASE_DIR
+import os
 
 
 # Create your views here.
@@ -34,7 +36,7 @@ def login_user(request):
             # Return an 'invalid login' error message.
             return render(request, 'login.html', {
                 'error': 'your username or password is invalid, try again.',
-            }, content_type='application/xhtml+xml')
+            })
 
 
 def logout_user(request):
@@ -86,10 +88,14 @@ def user_add(request):
                 user.email = email
                 userpf = UserProfile.objects.get(user_id=id)
                 if 'picture' in request.FILES:
-                    pic = request.FILES['picture']
-                else:
-                    pic=""
-                userpf.picture = pic
+                    userpf.picture = request.FILES['picture']
+                if 'picture-clear' in request.POST:
+                    try:
+                        if os.path.isfile(userpf.picture.path):
+                            os.remove(userpf.picture.path)
+                    except:
+                        pass
+                    userpf.picture = ''
                 user.save()
                 userpf.save()
             else:
@@ -154,3 +160,23 @@ def change_password(request):
         context = {'form': form,'id':id}
         return render(request, 'change_password.html', context)
 
+
+def responce_image(address):
+    pth = os.path.dirname(BASE_DIR+"/")
+    address = pth+address
+    try:
+        image_data = open(address, "rb").read()
+        return HttpResponse(image_data, content_type="image/png")
+    except IOError:
+        return address
+
+
+def get_profile_picture(request):
+    try:
+        upf = UserProfile.objects.get(user_id=request.user.id)
+    except:
+        upf=None
+        return responce_image("/static/dist/img/404_user.png")
+    if upf.picture:
+        return responce_image("/media/"+str(upf.picture))
+    return responce_image("/static/dist/img/404_user.png")

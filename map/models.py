@@ -42,8 +42,11 @@ class Map(models.Model):
 @receiver(pre_delete, sender=Map)
 def map_delete(sender, instance, **kwargs):
      if instance.picture:
-        if os.path.isfile(instance.picture.path):
-            os.remove(instance.picture.path)
+        try:
+            if os.path.isfile(instance.picture.path):
+                os.remove(instance.picture.path)
+        except:
+            pass
 
 
 @receiver(models.signals.pre_save, sender=Map)

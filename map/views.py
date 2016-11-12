@@ -4,6 +4,9 @@ from django.urls import reverse
 from .models import Building, Floor, Map
 from django.views.decorators.csrf import csrf_exempt
 from .forms import AddFloorForm, AddMapForm,EditMapForm
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.core import serializers
 
 
 def map_add(request):
@@ -60,13 +63,13 @@ def map_delete(request):
 
 
 def edit_map(request,mapid):
-    m = Map.objects.get(id=mapid)
-    data={'mapname':m.mapname,'picture':m.picture}
+    m = get_object_or_404(Map, pk=mapid)
+    data = {'mapname':m.mapname,'picture':m.picture}
     formget=EditMapForm(initial=data)
     if request.method == 'GET':
         return render(request, 'map_edit.html',{'form':formget,'map':m})
     else:
-       form=EditMapForm(request.POST,request.FILES)
+       form = EditMapForm(request.POST,request.FILES,instance=m)
        if form.is_valid():
             uploaded_form = form.cleaned_data
             mapname = uploaded_form['mapname']
@@ -82,3 +85,17 @@ def edit_map(request,mapid):
 def markers(request,mapid):
     m = Map.objects.get(id=mapid)
     return render(request, 'markers.html',{'map':m})
+
+
+@csrf_exempt
+def save_markers(request,mapid):
+    m = get_object_or_404(Map, pk=mapid)
+    m.markers =request.POST['json']
+    m.save()
+    return HttpResponse("Done")
+
+
+def get_markers(request,mapid):
+    m = get_object_or_404(Map, pk=mapid)
+    #markers_serialized = serializers.serialize('json', m.markers)
+    return JsonResponse(m.markers,safe=False)
