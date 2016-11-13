@@ -6,11 +6,7 @@
 
 {% load static %}
 <script src="{% static 'map/static/js/mapjs.js' %}" type="text/javascript"> </script>
-<script>
 
-
-
-</script>
 
 <link rel="stylesheet" href="{% static 'map/static/css/mapcss.css' %}">
 </br></br></br>
@@ -20,4 +16,6 @@
 <img id='mapviewer' src="{{ MEDIA_URL }}{{map.picture}}" height="800" width="1000">
 </br>
 <button id="save">save</button>
+<button id="toggleEdit">edit</button>
+<button id="clear">clear</button>
 {% endblock %}
