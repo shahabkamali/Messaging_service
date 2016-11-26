@@ -10,6 +10,6 @@ urlpatterns = [
     url(r'^mapdelete/$', views.map_delete, name='map_delete'),
     url(r'^editmap/(?P<mapid>\d+)/$', views.edit_map ,name='edit_map'),
     url(r'^markers/(?P<mapid>\d+)/$', views.markers ,name='markers'),
-    url(r'^saveMarkers/(?P<mapid>\d+)/$', views.save_markers ,name='save_markers'),
-    url(r'^getmarkers/(?P<mapid>\d+)/$', views.get_markers ,name='get_markers'),
+    url(r'^saveMarkers/(?P<mapid>\d+)/$', views.save_markers, name='save_markers'),
+    url(r'^getmarkers/(?P<mapid>\d+)/$', views.get_markers, name='get_markers'),
 ]

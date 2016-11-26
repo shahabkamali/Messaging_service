@@ -1,0 +1,50 @@
+{% extends "base.html"%}
+{% block title %}message{% endblock %}
+{% block bodyclass %} page users {% endblock %}
+{% block content %}
+{% load static %}
+select building:<select>
+    <option>building 1</option>
+</select>
+select floor:<select>
+    <option>floor 2</option>
+</select>
+select map:<select>
+    <option>map 1</option>
+</select>
+
+<img src="/media/map/picture/screenshot1.png" width="1000" height="400">
+</br>
+
+list for send message:
+<table class="table table-bordered">
+  <thead>
+  <tr valign="middle">
+    <th>buidling</th>
+    <th>floor</th>
+    <th>map</th>
+    <th>Location</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr valign="middle">
+    <th scope="row">building 1</th>
+    <td>floor2</td>
+    <td>map 2</td>
+    <td>kitchen</td>
+
+  </tr>
+  <tr valign="middle">
+    <th scope="row">building 1</th>
+    <td>floor1</td>
+    <td>map 1</td>
+    <td>salon</td>>
+  </tr>
+  </tbody>
+</table>
+select message:<select>
+    <option>MSG Hello</option>
+</select>
+<a href="/sendmessage" class="btn btn-info" role="button">Send Message</a>
+<a href="/sendmessage" class="btn btn-info" role="button">save list for next time</a>
+{% endblock %}

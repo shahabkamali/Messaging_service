@@ -26,5 +26,8 @@ def add_message(request):
     return render(request, 'add_message.html')
 
 
+def send_message(request):
+    return render(request, 'send_message.html')
+
 def map_list(request):
     return render(request, 'map_list.html')

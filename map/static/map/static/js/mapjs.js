@@ -1,17 +1,84 @@
 
 $(document).ready(function(){
+
+function macAdd(val){
+if (/[^\w-]|_/.test(val))
+{alert("invalid form only alpanumeric and -")
+return val}
+
+
+val=val.replace(/[^\w-]|_/g,'')
+val=val.replace(/(\w{2})([^-])/g,'$1'+'-'+'$2')
+val=val.replace(/-$/,'')
+return val
+}
+
+function save(){
+var notes = $img.imgNotes('export');
+			var jsonnotes='[';
+			$.each(notes, function(index, item) {
+			    jsonnotes+='{"x":"'+item.x+'","y":"'+item.y+'","note":"'+item.note+'"},'
+			});
+			jsonnotes = jsonnotes.substring(0, jsonnotes.length - 1);
+			jsonnotes+=']'
+			console.log(jsonnotes);
+            var mapid= $('#mapid').val();
+			var request = $.ajax({
+              url: "/maps/saveMarkers/"+mapid+"/",
+              method: "POST",
+              data: {"json":jsonnotes},
+            });
+            request.done(function( msg ) {
+              console.log("ok");
+              });
+
+}
     $("#mapviewer").imgViewer();
     $("#mapviewer").imgNotes({canEdit: true});
 
-    var $img = $("#mapviewer").imgNotes({	onAdd: function() {
-				this.options.vAll = "bottom";
-				this.options.hAll = "middle";
-				elem = $(document.createElement('div'))
-				       .css({width:'27px', height:'40px','text-align':'center',color:'#fff','font-weight':'bold', 'font-size':'14px'})
-				       .append($('<p>'+this.noteCount+'</p>').css({'z-index':1, position:'relative', top:'-8px'}))
-				       .prepend($('<img>',{src: '/static/dist/img/MapMarker_Marker_Inside_Pink.png', width:'40px', height:'40px'}).css({position:'absolute', top:'0px', left:'0px'}));
-				return elem;
-			}
+var $img = $("#mapviewer").imgNotes({
+	onEdit: function(ev, elem) {
+		var $elem = $(elem);
+		$('#NoteDialog').remove();
+	    return $('<div id="NoteDialog"></div>').dialog({
+		title: "Mac Address",
+		resizable: false,
+		modal: true,
+		height: "180",
+		width: "300",
+		position: { my: "left bottom", at: "right top", of: elem},
+			buttons: {
+				"Add": function() {
+				    var mac=$('#mac').val();
+					$elem.data("note",mac );
+					save();
+					$(this).dialog("close");
+				},
+				"Delete": function() {
+					$elem.trigger("remove");
+					save();
+					$(this).dialog("close");
+				},
+                "Cancel": function() {
+					$(this).dialog("close");
+				},
+				},
+				open: function(event, ui) {
+					$(this).css("overflow", "hidden");
+					var mac=""
+					mac=$elem.data("note");
+					if (!mac){
+					    mac ="00:00:00:00:00:00"
+					}
+					console.log(mac);
+					var inputs = '';
+                                 inputs+='<div class="form-group">';
+                                 inputs+='  <input type="text" class="form-control" id="mac"  value='+mac+' ></div>';
+                                $(this).html(inputs);
+				},
+
+				});
+				}
 		});
         var mapid= $('#mapid').val();
         var jsonmarkers="";
@@ -44,23 +111,7 @@ $(document).ready(function(){
 		});
 		var $export = $("#save");
 		$export.on("click", function() {
-		    var notes = $img.imgNotes('export');
-			var jsonnotes='[';
-			$.each(notes, function(index, item) {
-			    jsonnotes+='{"x":"'+item.x+'","y":"'+item.y+'","note":"'+item.note+'"},'
-			});
-			jsonnotes = jsonnotes.substring(0, jsonnotes.length - 1);
-			jsonnotes+=']'
-			console.log(jsonnotes);
-            var mapid= $('#mapid').val();
-			var request = $.ajax({
-              url: "/maps/saveMarkers/"+mapid+"/",
-              method: "POST",
-              data: {"json":jsonnotes},
-            });
-            request.done(function( msg ) {
-              console.log("ok");
-              });
+		    save();
 		});
 		var $clear = $("#clear");
 		$clear.on("click", function() {
@@ -82,7 +133,9 @@ $(document).ready(function(){
        data: { name : bname },
        }).done(function() {
            $('#addBuilingModal').modal('hide');
+           location.reload();
        });
+       //
   });
    ///floor
    $('#showfloorModal').click(function(){
@@ -98,6 +151,21 @@ $(document).ready(function(){
        data: { name : fname, building:building_id },
        }).done(function() {
            $('#addFloorModal').modal('hide');
+           location.reload();
        });
+
   });
+
+  var length = 1;
+$("#mac").focusin(function (evt) {
+
+    $(this).keypress(function () {
+        var content = $(this).val();
+        var content1 = content.replace(/\:/g, '');
+        length = content1.length;
+        if(((length % 2) == 0) && length < 10 && length > 1){
+            $('#mac').val($('#mac').val() + ':');
+        }
+    });
+});
 });

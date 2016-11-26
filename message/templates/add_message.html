@@ -6,11 +6,8 @@
 <script src="{% static 'map/static/mapjs.js' %}" type="text/javascript"> </script>
 
 
-<form method="post" action="{% url 'map:edit_map' map.id %}" enctype="multipart/form-data">
+<form method="post" action="{% url 'message:add_message' %}">
   {% csrf_token %}
-  {% if id %}
-    <input type="hidden" name="id" value="{{id}}">
-  {% endif %}
   {% for f in form %}
       <div class="form-group">
         <div class="form-error">{{ f.errors }}</div>

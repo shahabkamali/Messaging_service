@@ -40,7 +40,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'mainserver',
     'users',
-    'map'
+    'map',
+    'message',
 )
 
 
