@@ -1,0 +1,36 @@
+{% extends "base.html"%}
+{% load static %}
+{% block title %}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static '/message/css/message.css' %}">
+<script src="{% static '/message/js/message.js' %}" type="text/javascript"> </script>
+{% endblock %}
+
+{% block bodyclass %} page select-map{% endblock %}
+{% block content %}
+building:
+<select id="building_select" onchange="building_change();">
+    {% for b in building %}
+        <option value="{{b.id}}">{{b.name}}</option>
+    {% endfor %}
+</select>
+
+floor:
+<select id="floor_id" onchange="floor_change();">
+    {% for f in floors %}
+        <option value="{{f.id}}">{{f.name}}</option>
+    {% endfor %}
+</select>
+
+map:
+<select id="map_id">
+    {% for m in maps %}
+        <option value="{{m.id}}">{{m.mapname}}</option>
+    {% endfor %}
+</select>
+<button id="show-map">Show Map</button>
+
+<img id='mapviewer'  height="800" width="100%">
+
+
+{% endblock %}

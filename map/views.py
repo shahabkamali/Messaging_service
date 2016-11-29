@@ -99,3 +99,7 @@ def get_markers(request,mapid):
     m = get_object_or_404(Map, pk=mapid)
     #markers_serialized = serializers.serialize('json', m.markers)
     return JsonResponse(m.markers,safe=False)
+
+
+
+

@@ -4,6 +4,9 @@ from .forms import AddMessageForm
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
+from map.models import Building,Floor,Map
+from django.http import JsonResponse
+from django.core import serializers
 # Create your views here.
 
 
@@ -49,4 +52,37 @@ def message_edit(request,msgid):
 
 
 def select_map(request):
-    pass
+    building = Building.objects.all()
+    if len(building):
+        b1 = building[0]
+        floors = Floor.objects.filter(building=b1)
+        if len(floors):
+            f1 = floors[0]
+            maps = Map.objects.filter(floor=f1)
+            if len(maps):
+                map =maps[0]
+    return render(request, 'select_map.html', {"building": building, "floors":floors, "maps":maps,"map":map})
+
+
+def get_floors(request,b_id):
+    b = Building.objects.get(id=b_id)
+    floors = Floor.objects.filter(building=b)
+    floors_serialized = serializers.serialize('json', floors)
+    return JsonResponse(floors_serialized, safe=False)
+
+
+def get_maps(request,m_id):
+    f = Floor.objects.get(id=m_id)
+    maps = Map.objects.filter(floor=f)
+    maps_serialized = serializers.serialize('json', maps)
+    return JsonResponse(maps_serialized, safe=False)
+
+
+def get_map_address(request,mapid):
+    m = Map.objects.filter(id=mapid)
+    map_serialized = serializers.serialize('json', m)
+    return JsonResponse(map_serialized,safe=False)
+
+
+
+
