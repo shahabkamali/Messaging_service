@@ -1,0 +1,31 @@
+{% extends "base.html"%}
+{% block title %}users{% endblock %}
+{% block bodyclass %} page users {% endblock %}
+{% block content %}
+{% load static %}
+<a href="{% url 'message:message_add' %}" class="btn btn-info" role="button">Add Message</a>
+</br></br></br>
+Message List
+<table class="table table-bordered">
+  <thead>
+  <tr valign="middle">
+    <th>Text</th>
+    <th>Font</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for msg in  msgs %}
+  <tr valign="middle">
+    <th scope="row">{{ msg.text }}</th>
+    <td>{{ msg.font }} </td>
+    <td><a href="{% url 'message:message_edit' msg.id %}" type="button" class="btn btn-success">Edit</a></td>
+    <td><a href="{% url 'message:message_delete' msg.id %}" type="button" class="btn btn-danger">Delete</a></td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}

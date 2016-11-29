@@ -13,7 +13,7 @@
 
 
 
-<form class="form-inline" method="post" action="{% url 'message:message_add' %}">
+<form class="form-inline" method="post" action="{% url 'message:message_edit' msg.id %}">
   {% csrf_token %}
       <div class="form-group">
         {{ form.text.errors }}
