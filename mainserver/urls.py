@@ -23,7 +23,6 @@ urlpatterns = [
     url(r'^hardwares', panelviews.hardware),
     url(r'^addhardware', panelviews.add_hardware),
     url(r'^addmessage', panelviews.add_message),
-    url(r'^sendmessage', panelviews.send_message),
     url(r'^maplist$', panelviews.map_list),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

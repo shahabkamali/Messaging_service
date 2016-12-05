@@ -1,9 +1,11 @@
 from __future__ import unicode_literals
 from django.core.validators import MaxValueValidator,MinValueValidator
+from jsonfield import JSONField
 
 from django.db import models
 
 class Message(models.Model):
+    name = models.CharField(max_length=60, unique=True)
     text = models.TextField()
     x = models.IntegerField(default=0);
     y = models.IntegerField(default=0);
@@ -36,3 +38,7 @@ class Message(models.Model):
     )
     font = models.CharField(max_length=20, choices=fonts, default=F1)
 
+
+class SavedMessage(models.Model):
+    name = models.CharField(max_length=60, unique=True)
+    jsonlist = JSONField(blank=True, null=True)

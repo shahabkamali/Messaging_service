@@ -6,7 +6,7 @@ from models import Message
 class AddMessageForm(ModelForm):
     class Meta:
         model = Message
-        fields = ['text', 'x', 'y', 'r', 'g', 'b', 'brightness', 'effect', 'showtime','font']
+        fields = ['name','text', 'x', 'y', 'r', 'g', 'b', 'brightness', 'effect', 'showtime','font']
         widgets = {
             'text': Textarea(attrs={'cols': 80, 'rows': 5}),
         }

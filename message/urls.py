@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^getfloors/(?P<b_id>\d+)/$', views.get_floors, name='get_floors'),
     url(r'^getmaps/(?P<m_id>\d+)/$', views.get_maps, name='get_maps'),
     url(r'^getmapaddress/(?P<mapid>\d+)/$', views.get_map_address, name='get_map_address'),
+    url(r'^sendmessage/$', views.send_message, name='send_message'),
+    url(r'^savelist/$', views.save_list, name='save_list'),
 ]

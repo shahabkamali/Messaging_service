@@ -1,50 +1,29 @@
+
+
 $(document).ready(function(){
-
-function save(){
-var notes = $img.imgNotes('export');
-			var jsonnotes='[';
-			$.each(notes, function(index, item) {
-			    jsonnotes+='{"x":"'+item.x+'","y":"'+item.y+'","note":"'+item.note+'"},'
-			});
-			jsonnotes = jsonnotes.substring(0, jsonnotes.length - 1);
-			jsonnotes+=']'
-			console.log(jsonnotes);
-            var mapid= $('#mapid').val();
-			var request = $.ajax({
-              url: "/maps/saveMarkers/"+mapid+"/",
-              method: "POST",
-              data: {"json":jsonnotes},
-            });
-            request.done(function( msg ) {
-              console.log("ok");
-              });
-
-}
+    var mapviewer="<img id='mapviewer' width='100%' height='100%' alt='map'>";
+    $(".image-container").append(mapviewer);
     $("#mapviewer").imgViewer();
     $("#mapviewer").imgNotes({canEdit: true});
-
 var $img = $("#mapviewer").imgNotes({
 	onEdit: function(ev, elem) {
 		var $elem = $(elem);
 		$('#NoteDialog').remove();
 	    return $('<div id="NoteDialog"></div>').dialog({
-		title: "Define LED",
+		title: "select led",
 		resizable: false,
 		modal: true,
-		height: "220",
+		height: "300",
 		width: "300",
 		position: { my: "left bottom", at: "right top", of: elem},
 			buttons: {
 				"Add": function() {
 				    var name=$('#name').val();
+				    var building=$('#building_select option:selected').text();
+				    var floor=$('#floor_id option:selected').text();
+				    var map=$('#map_id option:selected').text();
 				    var mac=$('#mac').val();
-					$elem.data("note",name+"</br>"+mac );
-					save();
-					$(this).dialog("close");
-				},
-				"Delete": function() {
-					$elem.trigger("remove");
-					save();
+				    $('#markerlist tr:last').after('<tr><td class="name">'+building+'_'+floor+'_'+map+'_'+name+'</td><td class="mac">'+mac+'</td><td><button id="delete-row"  class="btn btn-danger delete-row">Delete</button></td></tr>');
 					$(this).dialog("close");
 				},
                 "Cancel": function() {
@@ -62,6 +41,8 @@ var $img = $("#mapviewer").imgNotes({
 					}
 					catch(e)
 					{
+					    $elem.trigger("remove");
+					    $(this).dialog("close");
 					    name="";
 					    mac="";
 					}
@@ -69,9 +50,9 @@ var $img = $("#mapviewer").imgNotes({
 					console.log(mac);
 					var inputs = '';
 					    inputs+='<div class="form-group">';
-                        inputs+='<input type="text" class="form-control" id="name" placeholder="Name" value='+name+'  ></div>';
+                        inputs+='<input type="text" class="form-control" id="name" placeholder="Name" readonly value='+name+'  ></div>';
                         inputs+='<div class="form-group">';
-                        inputs+='<input type="text" class="form-control" id="mac" placeholder="Mac Address" value='+mac+' ></div>';
+                        inputs+='<input type="text" class="form-control" id="mac" placeholder="Mac Address" readonly value='+mac+' ></div>';
                         $(this).html(inputs);
 				},
 
@@ -82,7 +63,6 @@ var $img = $("#mapviewer").imgNotes({
         var mapname=$("#map_id option[value='"+mapid+"']").text();
         console.log(mapname);
         var jsonmarkers="";
-        $img.imgNotes('option', 'canEdit', false);
         $("#mapviewer").imgViewer("option", "zoomable", false);
             $(window).keydown(function(e){
         if (e.altKey){console.log('down')}
@@ -104,7 +84,7 @@ var $img = $("#mapviewer").imgNotes({
         var jsonobj = JSON.parse(json);
         console.log(jsonobj);
         var srcstr="/media/"+jsonobj[0].fields.picture;
-       console.log($("#mapviewer").prop( "src", srcstr));
+       $("#mapviewer").prop( "src", srcstr);
 //        $("#mapviewer").attr("src",srcstr)
         var mapid= jsonobj[0].pk;
         var jsonmarkers="";
@@ -114,10 +94,69 @@ var $img = $("#mapviewer").imgNotes({
         });
       });
     }
+    else{
+        $("#mapviewer").removeAttr( "src");
+    }
+});
+  $('#save-list').click(function(){
+      var list_name=$('#list-name').val();
+      if (!list_name){
+        alert("please set name");
+        return;
+      }
+      var list=get_list();
+      console.log(list);
+      $.ajax({
+      method: "POST",
+      url: "/messages/savelist/",
+      data: { "jsonlist" : list,"listname":list_name },
+      dataType: "json",
+      success: function(result){
+        console.log(result);
+    }})
+      $('#save-modal').modal('hide');
+  });
+
+  $('#loadmessage').click(function(){
+      $("#markerlist").find("tr:gt(0)").remove();
+      var list=$('#select_saved_message').val();
+      var jsonlist=JSON.parse(list);
+      console.log(jsonlist);
+      jQuery.each(jsonlist, function(i,val) {
+         $('#markerlist tr:last').after('<tr><td class="name">'+val.name+'</td><td class="mac">'+val.mac+'</td><td><button id="delete-row"  class="btn btn-danger delete-row">Delete</button></td></tr>');
+      });
+  });
+
+  $('#send-message').click(function(){
+      var messageid=$('#select-message').val();
+      console.log(messageid);
+      var list=get_mac_list();
+      $.ajax({
+      method: "POST",
+      url: "/messages/sendmessage/",
+      data: { "messageid" : messageid,"maclist":list },
+      dataType: "json",
+      success: function(result){
+        console.log(result);
+    }})
+  });
+  ///clear image from markers
+  $("#floor_id").change(function(){
+      $img.imgNotes('clear');
+  });
+  $("#building_select").change(function(){
+      $img.imgNotes('clear');
+  });
+  $("#map_id").change(function(){
+      $img.imgNotes('clear');
+      $("#mapviewer").removeAttr( "src");
+  });
 });
 
+$( "body" ).on( "click", "#delete-row", function() {
+  var whichtr = $(this).closest("tr");
+    whichtr.remove();
 });
-
 function update(picker) {
         $('#id_r').val(Math.round(picker.rgb[0]));
         $('#id_g').val(Math.round(picker.rgb[1]));
@@ -125,6 +164,7 @@ function update(picker) {
 }
 
 function building_change(){
+    $("#mapviewer").removeAttr( "src");
     builidng_id=$('#building_select').val();
     $.getJSON("/messages/getfloors/"+builidng_id+"/",function(json){
       var jsonobj = JSON.parse(json);
@@ -140,6 +180,7 @@ function building_change(){
 }
 
 function floor_change(){
+    $("#mapviewer").removeAttr( "src");
     floor_id=$('#floor_id').val();
     if(floor_id){
         $.getJSON("/messages/getmaps/"+floor_id+"/",function(json){
@@ -152,6 +193,34 @@ function floor_change(){
           $("#map_id").html(itemlist);
         });
     }
+}
+
+function get_list(){
+    var jsonArr = [];
+    $('#markerlist tr').each(function() {
+       var mac = $(this).find(".mac").html();
+       var name = $(this).find(".name").html();
+       if(mac){
+           jsonArr.push({
+            mac:mac,
+            name:name
+            });
+       }
+ });
+ return  JSON.stringify(jsonArr);
+}
+
+function get_mac_list(){
+    var jsonArr = [];
+    $('#markerlist tr').each(function() {
+       var mac = $(this).find(".mac").html();
+       if(mac){
+           jsonArr.push({
+            mac
+            });
+       }
+ });
+ return  JSON.stringify(jsonArr);
 }
 
 

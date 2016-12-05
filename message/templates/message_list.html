@@ -9,6 +9,7 @@ Message List
 <table class="table table-bordered">
   <thead>
   <tr valign="middle">
+    <th>name</th>
     <th>Text</th>
     <th>Font</th>
     <th>Edit</th>
@@ -18,7 +19,8 @@ Message List
   <tbody>
   {% for msg in  msgs %}
   <tr valign="middle">
-    <th scope="row">{{ msg.text }}</th>
+    <th scope="row">{{ msg.name }}</th>
+    <td>{{ msg.text }}</td>
     <td>{{ msg.font }} </td>
     <td><a href="{% url 'message:message_edit' msg.id %}" type="button" class="btn btn-success">Edit</a></td>
     <td><a href="{% url 'message:message_delete' msg.id %}" type="button" class="btn btn-danger">Delete</a></td>

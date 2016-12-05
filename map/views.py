@@ -102,4 +102,3 @@ def get_markers(request,mapid):
 
 
 
-

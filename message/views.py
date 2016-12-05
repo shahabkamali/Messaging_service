@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Message
+from .models import Message,SavedMessage
 from .forms import AddMessageForm
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
 from django.urls import reverse
@@ -7,6 +7,9 @@ from django.shortcuts import get_object_or_404
 from map.models import Building,Floor,Map
 from django.http import JsonResponse
 from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
+import redis
+import json
 # Create your views here.
 
 
@@ -37,7 +40,7 @@ def message_edit(request,msgid):
     msg = get_object_or_404(Message, id=msgid)
     if request.method == 'GET':
 
-        data = {"text": msg.text, "r": msg.r, "g": msg.g, "b": msg.b, "font": msg.font,
+        data = {"name":msg.name,"text": msg.text, "r": msg.r, "g": msg.g, "b": msg.b, "font": msg.font,
                 "effect": msg.effect, "x": msg.x, "y": msg.y, "showtime": msg.showtime,"brightness":msg.brightness}
 
         form = AddMessageForm(initial=data)
@@ -61,7 +64,9 @@ def select_map(request):
             maps = Map.objects.filter(floor=f1)
             if len(maps):
                 map =maps[0]
-    return render(request, 'select_map.html', {"building": building, "floors":floors, "maps":maps,"map":map})
+    messages = Message.objects.all
+    saved_message = SavedMessage.objects.all()
+    return render(request, 'select_map.html', {"building": building, "floors":floors, "maps":maps,"map":map,"messages":messages,"saved_messages":saved_message})
 
 
 def get_floors(request,b_id):
@@ -81,8 +86,37 @@ def get_maps(request,m_id):
 def get_map_address(request,mapid):
     m = Map.objects.filter(id=mapid)
     map_serialized = serializers.serialize('json', m)
-    return JsonResponse(map_serialized,safe=False)
+    return JsonResponse(map_serialized, safe=False)
+
+@csrf_exempt
+def save_list(request):
+    list = request.POST['jsonlist']
+    name = request.POST['listname']
+
+    s = SavedMessage(name=name,jsonlist=list)
+    s.save();
+    return HttpResponse("done")
 
 
 
+@csrf_exempt
+def send_message(request):
+    list = request.POST['maclist']
+    message_id = request.POST['messageid']
+    msg = Message.objects.get(id=message_id)
+    str = "{brace_open}\"text\":\"{msg_text}\",\"font\":\"{msg_font}.bdf\",\"x\":{x},\"y\":{y}," \
+          "\"r\":{r},\"g\":{g},\"b\":{b},\"effect\":{effect},\"brightness\":" \
+          "{brightness},\"showtime\":{showtime}{brace_close}".format(msg_text=msg.text, msg_font=msg.font,
+                                                         x=msg.x, y=msg.y, r=msg.r,g=msg.g, b=msg.b,
+                                                         effect=msg.effect, brightness=msg.brightness,
+                                                         showtime=msg.showtime,brace_open="{", brace_close="}")
+    jsonList = json.loads(list)
+    maclist=[]
+    for item in jsonList:
+        maclist.append(item["mac"])
+    r = redis.StrictRedis(host='localhost', port=6379, db=0)
+    r.set("jsonMessage",str)
+    r.lpush('maclist', *maclist)
+    print maclist
+    return HttpResponse("done")
 
