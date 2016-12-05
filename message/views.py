@@ -92,9 +92,14 @@ def get_map_address(request,mapid):
 def save_list(request):
     list = request.POST['jsonlist']
     name = request.POST['listname']
-
-    s = SavedMessage(name=name,jsonlist=list)
-    s.save();
+    scheck = SavedMessage.objects.filter(name=name)[0]
+    if scheck:
+        scheck.jsonlist = list
+        scheck.save()
+        print list
+    else:
+        s = SavedMessage(name=name,jsonlist=list)
+        s.save();
     return HttpResponse("done")
 
 
