@@ -34,12 +34,13 @@ map:
 </div>
 <h3>Saved lists:</h3>
 <select id="select_saved_message">
-
     {% for s in saved_messages %}
         <option value="{{s.jsonlist}}">{{s.name}}</option>
     {% endfor %}
 </select>
 <button id="loadmessage" class="btn btn-info">Load</button>
+<button id="delete-selected-list" class="btn btn-mini btn-danger" type="button" data-toggle="tooltip" data-placement="top" title="delete list from saved list">Delete list</button>
+
 <hr />
 
 <table class="table table-bordered" id="markerlist">

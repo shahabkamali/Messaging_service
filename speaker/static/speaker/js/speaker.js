@@ -10,10 +10,10 @@ var $img = $("#mapviewer").imgNotes({
 		var $elem = $(elem);
 		$('#NoteDialog').remove();
 	    return $('<div id="NoteDialog"></div>').dialog({
-		title: "select led",
+		title: "select speakers",
 		resizable: false,
 		modal: true,
-		height: "300",
+		height: "220",
 		width: "300",
 		position: { my: "left bottom", at: "right top", of: elem},
 			buttons: {
@@ -23,7 +23,6 @@ var $img = $("#mapviewer").imgNotes({
 				    var floor=$('#floor_id option:selected').text();
 				    var map=$('#map_id option:selected').text();
 				    var mac=$('#mac').val();
-				    $('#markerlist tr:last').after('<tr><td class="name">'+building+'_'+floor+'_'+map+'_'+name+'</td><td class="mac">'+mac+'</td><td><button id="delete-row"  class="btn btn-danger delete-row">Delete</button></td></tr>');
 					$(this).dialog("close");
 				},
                 "Cancel": function() {
@@ -46,8 +45,6 @@ var $img = $("#mapviewer").imgNotes({
 					    name="";
 					    mac="";
 					}
-
-					console.log(mac);
 					var inputs = '';
 					    inputs+='<div class="form-group">';
                         inputs+='<input type="text" class="form-control" id="name" placeholder="Name" readonly value='+name+'  ></div>';
@@ -79,12 +76,10 @@ var $img = $("#mapviewer").imgNotes({
     var map_id=$("#map_id").val();
     if(map_id){
       $.getJSON("/messages/getmapaddress/"+map_id+"/",function(json){
-        console.log(json);
         var jsonobj = JSON.parse(json);
         console.log(jsonobj);
         var srcstr="/media/"+jsonobj[0].fields.picture;
        $("#mapviewer").prop( "src", srcstr);
-//        $("#mapviewer").attr("src",srcstr)
         var mapid= jsonobj[0].pk;
         var jsonmarkers="";
         $.get( "/maps/getmarkers/"+mapid+"/", function( data ) {
@@ -92,8 +87,9 @@ var $img = $("#mapviewer").imgNotes({
            var markerjson=[];
            console.log(json);
            jQuery.each(json, function() {
-              var type=this.note.split("</br>")[2];
-              if (type=="LED"){
+              var type = this.note.split("</br>")[2];
+              console.log(type);
+              if (type=="Speaker"){
                   markerjson.push(this);
               }
            });
@@ -105,61 +101,7 @@ var $img = $("#mapviewer").imgNotes({
         $("#mapviewer").removeAttr( "src");
     }
 });
-  $('#save-list').click(function(){
-      var list_name=$('#list-name').val();
-      $('#list-name').val("");
-      if (!list_name){
-        alert("please set name");
-        return;
-      }
-      var list=get_list();
-      console.log(list);
-      $.ajax({
-      method: "POST",
-      url: "/messages/savelist/",
-      data: { "jsonlist" : list,"listname":list_name },
-      dataType: "json",
-      success: function(result){
-        console.log(result);
-    }})
-      $('#save-modal').modal('hide');
-  });
-  ////load list from selected dropdown
-  $('#loadmessage').click(function(){
-      $("#markerlist").find("tr:gt(0)").remove();
-      var list=$('#select_saved_message').val();
-      var jsonlist=JSON.parse(list);
-      console.log(jsonlist);
-      jQuery.each(jsonlist, function(i,val) {
-         $('#markerlist tr:last').after('<tr><td class="name">'+val.name+'</td><td class="mac">'+val.mac+'</td><td><button id="delete-row"  class="btn btn-danger delete-row">Delete</button></td></tr>');
-      });
-  });
-     ///delete selected list
-  $('#delete-selected-list').click(function(){
-      var list_name=$('#select_saved_message option:selected').text();
 
-      $.ajax({
-      method: "POST",
-      url: "/messages/deletelist/",
-      data: { "listname":list_name },
-      success: function(result){
-        $("#select_saved_message option:selected").remove();
-      }});
-  });
-
-  $('#send-message').click(function(){
-      var messageid=$('#select-message').val();
-      console.log(messageid);
-      var list=get_mac_list();
-      $.ajax({
-      method: "POST",
-      url: "/messages/sendmessage/",
-      data: { "messageid" : messageid,"maclist":list },
-      dataType: "json",
-      success: function(result){
-        console.log(result);
-    }})
-  });
   ///clear image from markers
   $("#floor_id").change(function(){
       $img.imgNotes('clear');

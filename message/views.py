@@ -92,14 +92,20 @@ def get_map_address(request,mapid):
 def save_list(request):
     list = request.POST['jsonlist']
     name = request.POST['listname']
-    scheck = SavedMessage.objects.filter(name=name)[0]
+    scheck = SavedMessage.objects.filter(name=name)
     if scheck:
-        scheck.jsonlist = list
-        scheck.save()
-        print list
+        scheck[0].jsonlist = list
+        scheck[0].save()
     else:
         s = SavedMessage(name=name,jsonlist=list)
         s.save();
+    return HttpResponse("done")
+
+
+@csrf_exempt
+def delete_list(request):
+    listname = request.POST['listname']
+    SavedMessage.objects.filter(name=listname).delete()
     return HttpResponse("done")
 
 

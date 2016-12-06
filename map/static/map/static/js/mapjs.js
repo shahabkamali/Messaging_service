@@ -33,14 +33,15 @@ var $img = $("#mapviewer").imgNotes({
 		title: "Define LED",
 		resizable: false,
 		modal: true,
-		height: "220",
+		height: "260",
 		width: "300",
 		position: { my: "left bottom", at: "right top", of: elem},
 			buttons: {
 				"Add": function() {
 				    var name=$('#name').val();
 				    var mac=$('#mac').val();
-					$elem.data("note",name+"</br>"+mac );
+                    var type=$('#device-type').val();
+					$elem.data("note",name+"</br>"+mac+"</br>"+type );
 					save();
 					$(this).dialog("close");
 				},
@@ -54,22 +55,36 @@ var $img = $("#mapviewer").imgNotes({
 				},
 				},
 				open: function(event, ui) {
+				    console.log($elem);
 					$(this).css("overflow", "hidden");
-					var mac=""
-					var name=""
+					var mac="";
+					var name="";
+					var type="";
 					try{
 					    var note=$elem.data("note").split('</br>');
 					    name=note[0];
 					    mac=note[1];
+					    console.log(type);
+					    type=note[2];
+					    console.log(type);
 					}
 					catch(e)
 					{
 					    name="";
 					    mac="";
+					    type="";
 					}
-
-					console.log(mac);
 					var inputs = '';
+					console.log(type);
+					if(type == ""){
+					    inputs+='<div class="form-group">';
+					    inputs+='device type:<select id="device-type"><option value="LED">LED</option>';
+					    inputs+='<option value="Speaker">Speaker</option><option value="TV">TV</option></select>';
+					    inputs+='</div>';
+					}
+					else{
+					    inputs+='device type: ' + type;
+					}
 					    inputs+='<div class="form-group">';
                         inputs+='<input type="text" class="form-control" id="name" placeholder="Name" value='+name+'  ></div>';
                         inputs+='<div class="form-group">';
@@ -84,6 +99,7 @@ var $img = $("#mapviewer").imgNotes({
         var jsonmarkers="";
         $.get( "/maps/getmarkers/"+mapid+"/", function( data ) {
            var json = JSON.parse(data);
+           console.log(json[0].note);
            $img.imgNotes("import",json );
         });
 
