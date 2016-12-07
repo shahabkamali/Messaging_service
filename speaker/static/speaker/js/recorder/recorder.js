@@ -1,7 +1,7 @@
 (function(window){
 
-  var WORKER_PATH = 'js/lib/recorderWorker.js';
-
+  var WORKER_PATH = '/static/speaker/js/recorder/recorderWorker.js';
+  //var WORKER_PATH ='/speaker/static/js/recorder/recorderWorker.js';
   var Recorder = function(source, cfg){
     var config = cfg || {};
     var bufferLen = config.bufferLen || 4096;

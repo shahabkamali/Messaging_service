@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html"%}
+{% block title %}users{% endblock %}
+{% block bodyclass %} page users {% endblock %}
+{% block content %}
+{% load static %}
+<a href="{% url 'speaker:voice_add' %}" class="btn btn-info" role="button">Add voice</a>
+</br></br></br>
+Voice List
+<table class="table table-bordered">
+  <thead>
+  <tr valign="middle">
+    <th>name</th>
+    <th>File</th>
+    <th>Delete</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for voice in  voices %}
+  <tr valign="middle">
+    <th scope="row">{{ voice.name }}</th>
+    <td>{{ voice.filename }}</td>
+    <td><a href="{% url 'speaker:voice_delete' voice.id %}" type="button" class="btn btn-danger">Delete</a></td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
 
-</body>
-</html>
+
+{% endblock %}

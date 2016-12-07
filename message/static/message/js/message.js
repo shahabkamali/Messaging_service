@@ -104,7 +104,7 @@ var $img = $("#mapviewer").imgNotes({
     else{
         $("#mapviewer").removeAttr( "src");
     }
-});
+  });
   $('#save-list').click(function(){
       var list_name=$('#list-name').val();
       $('#list-name').val("");

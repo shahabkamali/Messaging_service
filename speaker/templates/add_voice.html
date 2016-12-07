@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html"%}
+{% load static %}
+{% block title %}{% endblock %}
+{% block head %}
 
-</body>
-</html>
+{% endblock %}
+
+{% block bodyclass %} page addmap{% endblock %}
+{% block content %}
+<form method="post" action="{% url 'speaker:voice_add' %}" enctype="multipart/form-data">
+  {% csrf_token %}
+
+    {% for f in form %}
+      <div class="form-group">
+        <div class="form-error">{{ f.errors }}</div>
+        {{ f.label_tag }}</br> {{ f }}
+      </div>
+  {% endfor %}
+    </br></br>
+    <button type="submit"  class="btn btn-primary">Save</button>
+</form>
+{% endblock %}

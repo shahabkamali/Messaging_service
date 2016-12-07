@@ -2,11 +2,11 @@
 {% load static %}
 {% block title %}{% endblock %}
 {% block head %}
-
+<link rel="stylesheet" href="{% static '/speaker/css/speaker.css' %}">
 <script src="{% static '/speaker/js/speaker.js' %}" type="text/javascript"> </script>
 {% endblock %}
 
-{% block bodyclass %} page select-map{% endblock %}
+{% block bodyclass %} page select-speaker{% endblock %}
 {% block content %}
 building:
 <select id="building_select" onchange="building_change();">
@@ -32,4 +32,60 @@ map:
 
 <div class="image-container">
 </div>
+<h3>Saved lists:</h3>
+<select id="select_saved_message">
+    {% for s in saved_messages %}
+        <option value="{{s.jsonlist}}">{{s.name}}</option>
+    {% endfor %}
+</select>
+<button id="loadmessage" class="btn btn-info">Load</button>
+<button id="delete-selected-list" class="btn btn-mini btn-danger" type="button" data-toggle="tooltip" data-placement="top" title="delete list from saved list">Delete list</button>
+
+<hr />
+
+<table class="table table-bordered" id="markerlist">
+  <thead>
+  <tr valign="middle">
+    <th>name</th>
+    <th>mac</th>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+select voice:
+<select id="select-voice">
+  {% for voice in voices %}
+  <option value="{{voice.name}}">{{voice.name}}</option>
+  {% endfor %}
+</select>
+<button  id="send-voice" class="btn btn-info">Send voice</button>
+<button  id="save-table" class="btn btn-info" data-toggle="modal" data-target="#save-modal">Save For NextTime</button>
+
+
+
+<div class="modal fade" id="save-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Save List For Next Time:</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label for="list-name" class="col-xs-2 col-form-label">Name:</label>
+           <div class="col-xs-10">
+             <input class="form-control" type="text" value="" id="list-name">
+           </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="save-list">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {% endblock %}

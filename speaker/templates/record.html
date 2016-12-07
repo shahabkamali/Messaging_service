@@ -1,10 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html"%}
+{% load static %}
+{% block title %}{% endblock %}
+{% block head %}
 
-</body>
-</html>
+<script src="{% static '/speaker/js/speaker.js' %}" type="text/javascript"> </script>
+<script src="{% static '/speaker/js/recorder/recorder.js' %}"></script>
+<script src="{% static '/speaker/js/recorder/recordLive.js' %}"></script>
+{% endblock %}
+
+{% block bodyclass %} page select-map{% endblock %}
+{% block content %}
+<h2>Record</h2>
+      <p>
+        <button class="btn btn-primary" onclick="startRecording(this);">Record</button>
+        <button class="btn btn-warning" onclick="stopRecording(this);" disabled>Stop</button>
+      </p>
+{{ STATIC_URL }}
+<table id="recordingslist">
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th id="sequencerBoxes">
+          </th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>
+          </th>
+          <th>
+          </th>
+          <th>
+          </th>
+        </tr>
+</table>
+{% endblock %}

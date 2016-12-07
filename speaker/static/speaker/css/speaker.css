@@ -1,0 +1,12 @@
+
+
+.select-speaker #mapviewer{
+    top:50px !important;
+}
+
+.select-speaker .image-container{
+    margin-top:20px;
+    width:100%;
+    height:800px;
+    background-color: white
+}

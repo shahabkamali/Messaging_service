@@ -23,6 +23,8 @@ var $img = $("#mapviewer").imgNotes({
 				    var floor=$('#floor_id option:selected').text();
 				    var map=$('#map_id option:selected').text();
 				    var mac=$('#mac').val();
+				    $('#markerlist tr:last').after('<tr><td class="name">'+building+'_'+floor+'_'+map+'_'+name+'</td><td class="mac">'+mac+'</td><td><button id="delete-row"  class="btn btn-danger delete-row">Delete</button></td></tr>');
+
 					$(this).dialog("close");
 				},
                 "Cancel": function() {
@@ -112,6 +114,58 @@ var $img = $("#mapviewer").imgNotes({
   $("#map_id").change(function(){
       $img.imgNotes('clear');
       $("#mapviewer").removeAttr( "src");
+  });
+  $('#save-list').click(function(){
+    var list_name=$('#list-name').val();
+    $('#list-name').val("");
+    if (!list_name){
+      alert("please set name");
+      return;
+    }
+    var list=get_list();
+    console.log(list);
+    $.ajax({
+    method: "POST",
+    url: "/speakers/savelist/",
+    data: { "jsonlist" : list,"listname":list_name },
+    dataType: "json",
+    success: function(result){
+      console.log(result);
+  }})
+    $('#save-modal').modal('hide');
+  });
+       ///delete selected list
+  $('#delete-selected-list').click(function(){
+      var list_name=$('#select_saved_message option:selected').text();
+      $.ajax({
+      method: "POST",
+      url: "/speakers/deletelist/",
+      data: { "listname":list_name },
+      success: function(result){
+        $("#select_saved_message option:selected").remove();
+      }});
+  });
+  //load list
+  $('#loadmessage').click(function(){
+      $("#markerlist").find("tr:gt(0)").remove();
+      var list=$('#select_saved_message').val();
+      var jsonlist=JSON.parse(list);
+      console.log(jsonlist);
+      jQuery.each(jsonlist, function(i,val) {
+         $('#markerlist tr:last').after('<tr><td class="name">'+val.name+'</td><td class="mac">'+val.mac+'</td><td><button id="delete-row"  class="btn btn-danger delete-row">Delete</button></td></tr>');
+      });
+  });
+  $('#send-voice').click(function(){
+      var voicename=$('#select-voice').val();
+      var list=get_mac_list();
+      $.ajax({
+      method: "POST",
+      url: "/speakers/sendvoice/",
+      data: { "voicename" : voicename,"maclist":list },
+      dataType: "json",
+      success: function(result){
+        console.log(result);
+    }})
   });
 });
 
