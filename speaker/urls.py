@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^savelist/$', views.save_list, name='save_list'),
     url(r'^deletelist/$', views.delete_list, name='delete_list'),
     url(r'^sendvoice/$', views.send_voice, name='send_voice'),
+    url(r'^findspeaker/$', views.find_speaker, name='find_speaker'),
 ]

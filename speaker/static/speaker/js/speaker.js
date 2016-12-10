@@ -167,6 +167,23 @@ var $img = $("#mapviewer").imgNotes({
         console.log(result);
     }})
   });
+  //send beep
+  $('.send-beep').click(function(){
+      var jsonArr = [];
+      var mac = $(this).closest('tr').find('.mac').text();
+      if(mac){
+           jsonArr.push({
+            mac
+            });
+      }
+      $.ajax({
+      method: "POST",
+      url: "/speakers/sendvoice/",
+      data: { "voicename" : 'beep',"maclist":JSON.stringify(jsonArr) },
+      success: function(result){
+        console.log(result);
+    }})
+  });
 });
 
 $( "body" ).on( "click", "#delete-row", function() {

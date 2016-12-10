@@ -248,48 +248,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <li class="header">HEADER</li>
           <!-- Optionally, you can add icons to the links -->
           <li class="active"><a href="/"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
-        <li class="treeview active">
-          <a href="#">
-            <i class="fa fa-link"></i>
-            <span>Map</span>
-            <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
-            <li class="active">
-              <a href="/maps">
-                Show Maps
-              </a>
-            </li>
-            <li>
-              <a href="/maplist">
-                Map List
-              </a>
-            </li>
-          </ul>
-         </li>
-          <li><a href="{% url 'message:select_map' %}"><i class="fa fa-link"></i> <span>Text preset</span></a></li>
-
-          <li><a href="/tv-preset"><i class="fa fa-link"></i> <span>TV preset</span></a></li>
-          <li><a href="{% url 'users:user_lists' %}"><i class="fa fa-link"></i> <span>Users</span></a></li>
-          <li><a href="/hardwares"><i class="fa fa-link"></i> <span>Hardware</span></a></li>
+          <li><a href="{% url 'map:map_list' %}"><i class="fa fa-link"></i> <span>Map</span></a></li>
           <li><a href="{% url 'message:message_list' %}"><i class="fa fa-link"></i> <span>Message</span></a></li>
-           <li class="treeview active">
-          <a href="#">
-            <i class="fa fa-link"></i>
-            <span>Speaker</span>
-            <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
-            <li class="active">
-              <a href="{% url 'speaker:voice_list' %}"><i class="fa fa-link"></i> <span>voice</span></a>
-            </li>
-            <li class="active">
-              <a href="{% url 'speaker:select_speaker' %}"><i class="fa fa-link"></i> <span>voice preset</span></a>
-            </li>
-            <li class="active">
-              <a href="{% url 'speaker:record' %}"><i class="fa fa-link"></i> <span>record</span></a>
-            </li>
-          </ul>
+          <li><a href="{% url 'speaker:voice_list' %}"><i class="fa fa-link"></i> <span>Voice</span></a></li>
+          <li><a href="{% url 'users:user_lists' %}"><i class="fa fa-link"></i> <span>Users</span></a></li>
          </li>
       </ul>
       <!-- /.sidebar-menu -->

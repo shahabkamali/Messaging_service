@@ -83,7 +83,10 @@ var $img = $("#mapviewer").imgNotes({
 					    inputs+='</div>';
 					}
 					else{
-					    inputs+='device type: ' + type;
+					    inputs+='<div class="form-group">';
+					    inputs+='device type:<select id="device-type">';
+					    inputs+='<option value="'+type+'">'+type+'</option></select>';
+					    inputs+='</div>';
 					}
 					    inputs+='<div class="form-group">';
                         inputs+='<input type="text" class="form-control" id="name" placeholder="Name" value='+name+'  ></div>';

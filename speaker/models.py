@@ -9,6 +9,15 @@ from jsonfield import JSONField
 # Create your models here.
 
 
+def validate_file_extension(value):
+    import os
+    from django.core.exceptions import ValidationError
+    ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
+    valid_extensions = ['.wav']
+    if not ext.lower() in valid_extensions:
+        raise ValidationError(u'Unsupported file extension. only wav file supported')
+
+
 def content_file_name(instance, filename):
     ext = filename.split('.')[-1]
     filename = "%s.%s" % (instance.name, ext)
@@ -17,7 +26,7 @@ def content_file_name(instance, filename):
 
 class Voice(models.Model):
     name = models.CharField(max_length=60, unique=True)
-    filename = models.FileField(upload_to=content_file_name)
+    filename = models.FileField(upload_to=content_file_name, validators=[validate_file_extension])
     directory_string_var = 'Speaker/voice/'
 
 

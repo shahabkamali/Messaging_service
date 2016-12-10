@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from map.models import Building,Floor,Map
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 import json
 import redis
 
@@ -89,3 +90,24 @@ def send_voice(request):
     r.set("voicename", voicename)
     r.lpush('maclist', *maclist)
     return HttpResponse("done")
+
+
+def find_speaker(request):
+    if request.method == "GET":
+        with open(settings.BASE_DIR + "/jsonlist.json", "r+") as f:
+            jsonlist = json.loads(f.read())
+        maps = Map.objects.all()
+        assigned = []
+        for map in maps:
+            markerjson =json.loads(map.markers)
+            notes = markerjson
+            for note in notes:
+                mac = note['note'].split("</br>")[1]
+                assigned.append(mac)
+        maclist = []
+        for mac in jsonlist:
+            if mac not in assigned:
+                maclist.append(mac)
+        return render(request, 'find_speaker.html', {"maclist": maclist})
+    else:
+        pass

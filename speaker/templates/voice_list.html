@@ -4,6 +4,9 @@
 {% block content %}
 {% load static %}
 <a href="{% url 'speaker:voice_add' %}" class="btn btn-info" role="button">Add voice</a>
+<a href="{% url 'speaker:record' %}" class="btn btn-info" role="button">Revord Voice</a>
+<a href="{% url 'speaker:select_speaker' %}" class="btn btn-info" role="button">Send Voice</a>
+<a href="{% url 'speaker:find_speaker' %}" class="btn btn-info" role="button">Find Speakers</a>
 </br></br></br>
 Voice List
 <table class="table table-bordered">
@@ -18,7 +21,10 @@ Voice List
   {% for voice in  voices %}
   <tr valign="middle">
     <th scope="row">{{ voice.name }}</th>
-    <td>{{ voice.filename }}</td>
+    <td> <audio controls>
+  <source src="/media/{{voice.filename}}" type="audio/ogg">
+      Your browser does not support the audio element.
+        </audio> </td>
     <td><a href="{% url 'speaker:voice_delete' voice.id %}" type="button" class="btn btn-danger">Delete</a></td>
   </tr>
   {% endfor %}
