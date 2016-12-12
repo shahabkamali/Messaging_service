@@ -1,0 +1,30 @@
+{% extends "base.html"%}
+{% block title %}users{% endblock %}
+{% block bodyclass %} page users {% endblock %}
+{% block content %}
+{% load static %}
+<a href="{% url 'tv:tv_message_add' %}" class="btn btn-info" role="button">Add Message</a>
+<a href="{% url 'tv:select_tv' %}" class="btn btn-info" role="button">Send Message</a>
+</br></br></br>
+Message List
+<table class="table table-bordered">
+  <thead>
+  <tr valign="middle">
+    <th>name</th>
+    <th>Text</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for msg in  messages %}
+  <tr valign="middle">
+    <th scope="row">{{ msg.name }}</th>
+    <td>{{ msg.context|truncatechars:80 }}</td>
+    <td><a href="{% url 'tv:tv_message_edit' msg.id %}" type="button" class="btn btn-success">Edit</a></td>
+    <td><a href="{% url 'tv:tv_message_delete' msg.id %}" type="button" class="btn btn-danger">Delete</a></td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}

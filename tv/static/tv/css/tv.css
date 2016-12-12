@@ -1,0 +1,11 @@
+
+.select-tv #mapviewer{
+    top:50px !important;
+}
+
+.select-tv .image-container{
+    margin-top:20px;
+    width:100%;
+    height:800px;
+    background-color: white
+}

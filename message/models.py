@@ -13,7 +13,7 @@ class Message(models.Model):
     g = models.SmallIntegerField(validators=[ MinValueValidator(0),MaxValueValidator(255),])
     b = models.SmallIntegerField(validators=[ MinValueValidator(0),MaxValueValidator(255),])
     brightness = models.SmallIntegerField(default=100,validators=[ MinValueValidator(0),MaxValueValidator(100),])
-    showtime = models.SmallIntegerField(default=10,validators=[ MinValueValidator(0),MaxValueValidator(100),])
+    showtime = models.SmallIntegerField(default=10, help_text="test",validators=[ MinValueValidator(0),MaxValueValidator(100),])
     Static = 0
     Scroll = 1
     EFFECT_CHOICES = (

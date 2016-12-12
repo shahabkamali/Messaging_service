@@ -23,7 +23,6 @@ def worker():
         with open('jsonlist.json', 'w') as outfile:
            json.dump(jsonlist, outfile)
         sock.send("recived")
-
 t = threading.Thread(target=worker)
 t.start()
 
@@ -35,7 +34,7 @@ r.set("jsonMessage","")
 r.delete("maclist")
 
 
-def send_textmessage():
+def send_textmessage(jsonMessage):
     maclist=r.lrange('maclist', 0, -1)
     r.set("jsonMessage","")
     r.delete("maclist")
@@ -56,14 +55,27 @@ def send_voicemessage():
         publisher.send_multipart([mac.strip(), encoded_string])
 
 
+def send_tvMessage(tvMessage):
+    maclist = r.lrange('maclist', 0, -1)
+    r.set("tvMessage","")
+    r.delete("maclist")
+    for mac in maclist:
+        r.delete("maclist")
+        publisher.send_multipart([mac.strip(), tvMessage])
+
+
+
 while True:
     time.sleep(1)
     jsonMessage = r.get("jsonMessage")
     voicename = r.get("voicename")
+    tvMessage = r.get("tvMessage")
     if jsonMessage != "":
-        send_textmessage()
+        send_textmessage(jsonMessage)
     if voicename != "":
         send_voicemessage()
+    if tvMessage != "":
+        send_tvMessage(tvMessage)
         
 
 

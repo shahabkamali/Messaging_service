@@ -28,7 +28,7 @@ def message_add(request):
             form.save()
             return HttpResponseRedirect(reverse('message:message_list'))
         else:
-            return render(request, "add_map.html", { 'form': form})
+            return render(request, "add_message.html", { 'form': form})
 
 
 def message_delete(request,msgid):

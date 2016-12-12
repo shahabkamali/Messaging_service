@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^maps/', include('map.urls')),
     url(r'^messages/', include('message.urls')),
     url(r'^speakers/', include('speaker.urls')),
+    url(r'^tvs/', include('tv.urls')),
     url(r'^$', panelviews.index, name='index'),
     url(r'^hardwares', panelviews.hardware),
     url(r'^addhardware', panelviews.add_hardware),

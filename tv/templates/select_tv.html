@@ -1,0 +1,93 @@
+{% extends "base.html"%}
+{% load static %}
+{% block title %}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{% static '/tv/css/tv.css' %}">
+<script src="{% static '/tv/js/tv.js' %}" type="text/javascript"> </script>
+{% endblock %}
+
+{% block bodyclass %} page select-tv{% endblock %}
+{% block content %}
+building:
+<select id="building_select" onchange="building_change();">
+    {% for b in building %}
+        <option value="{{b.id}}">{{b.name}}</option>
+    {% endfor %}
+</select>
+
+floor:
+<select id="floor_id" onchange="floor_change();">
+    {% for f in floors %}
+        <option value="{{f.id}}">{{f.name}}</option>
+    {% endfor %}
+</select>
+
+map:
+<select id="map_id">
+    {% for m in maps %}
+        <option value="{{m.id}}">{{m.mapname}}</option>
+    {% endfor %}
+</select>
+<button id="show-map">Show Map</button>
+
+<div class="image-container">
+</div>
+<h3>Saved lists:</h3>
+<select id="select_saved_message">
+    {% for s in saved_messages %}
+        <option value="{{s.jsonlist}}">{{s.name}}</option>
+    {% endfor %}
+</select>
+<button id="loadmessage" class="btn btn-info">Load</button>
+<button id="delete-selected-list" class="btn btn-mini btn-danger" type="button" data-toggle="tooltip" data-placement="top" title="delete list from saved list">Delete list</button>
+
+<hr />
+
+<table class="table table-bordered" id="markerlist">
+  <thead>
+  <tr valign="middle">
+    <th>name</th>
+    <th>mac</th>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<button  id="save-table" class="btn btn-info" data-toggle="modal" data-target="#save-modal" data-toggle="tooltip" data-placement="top" title="save above list">Save List</button>
+</br></br></br>
+select Message:
+<select id="select-message">
+  {% for msg in messages %}
+  <option value="{{msg.id}}">{{msg.name}}</option>
+  {% endfor %}
+</select>
+<button  id="send-message" class="btn btn-info">Send Message</button>
+
+
+
+
+<div class="modal fade" id="save-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Save List For Next Time:</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label for="list-name" class="col-xs-2 col-form-label">Name:</label>
+           <div class="col-xs-10">
+             <input class="form-control" type="text" value="" id="list-name">
+           </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="save-list">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}
