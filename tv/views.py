@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 import redis
 import json
 
+
 def message_list(request):
     messages = Message.objects.all()
     return render(request, "tv_message_list.html", {'messages': messages})
@@ -84,15 +85,17 @@ def send_message(request):
     list = request.POST['maclist']
     message_id = request.POST['messageid']
     msg = Message.objects.get(id=message_id)
-    str = "{brace_open}\"text\":\"{msg_text}\",\"showtime\":{showtime}{brace_close}".format(msg_text=msg.context, showtime=msg.showtime
-                                                        , brace_open="{",brace_close="}")
+    jsonstr={}
+    jsonstr["showtime"]=msg.showtime
+    jsonstr["text"]=msg.context
+    jsonstr=json.dumps(jsonstr, ensure_ascii=False)
     print str
     jsonList = json.loads(list)
     maclist=[]
     for item in jsonList:
         maclist.append(item["mac"])
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
-    r.set("tvMessage",str)
+    r.set("tvMessage",jsonstr)
     r.lpush('maclist', *maclist)
     print maclist
     return HttpResponse("done")
